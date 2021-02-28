@@ -12,7 +12,7 @@ errorCheck() {
 
 ## FINISHING #
 
-sudo rm /var/lib/pacman/db.lck
+sudo rm /var/lib/pacman/db.lck 2> /dev/null
 
 # powerline in linux console
 eval "$PACKER -S --needed --noconfirm terminus-font powerline-fonts"
@@ -40,15 +40,6 @@ if [ $IS_MANJARO = true ]; then
 	sudo cp $SCRIPTS/setup/manjaro-cat.png /usr/share/grub/themes/manjaro/background.png
 	sed 's/.*GRUB_THEME=.*$/GRUB_THEME="\/usr\/share\/grub\/themes\/manjaro\/theme.txt"/g' </etc/default/grub >grub
 	sudo mv -f grub /etc/default
-	echo '#
-#
-# ==> ADD "bootsplash.bootfile=bootsplash-themes/manjaro/bootsplash" to GRUB_CMDLINE_LINUX_DEFAULT
-#' | sudo tee -a /etc/default/grub
-
-	echo '#
-#
-# ==> ADD "bootsplash-manjaro" to HOOKS
-#' | sudo tee -a /etc/mkinitcpio.conf
 fi
 
 if [ $IS_MANJARO != true ]; then
@@ -57,7 +48,6 @@ if [ $IS_MANJARO != true ]; then
 fi
 errorCheck "grub config"
 
-sudo micro /etc/mkinitcpio.conf
 sudo micro /etc/default/grub
 
 sudo mkinitcpio -P

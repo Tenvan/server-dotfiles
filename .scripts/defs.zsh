@@ -11,6 +11,9 @@ export IS_GARUDA=false
 export SCRIPTS="$HOME/.scripts"
 export PACKER=paru
 
+#export DEBUG=true
+export DEBUG=false
+
 if [ $LINUX_VERSION_NAME = "Archlinux" ]; then
 	export IS_ARCH=true
 fi

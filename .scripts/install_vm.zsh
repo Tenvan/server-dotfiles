@@ -38,7 +38,7 @@ uninst() {
     fi
 }
 
-sudo rm /var/lib/pacman/db.lck
+sudo rm /var/lib/pacman/db.lck 2> /dev/null
 
 ###########################
 # collect needed packages #

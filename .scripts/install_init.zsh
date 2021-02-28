@@ -14,7 +14,7 @@ errorCheck() {
     fi
 }
 
-sudo rm /var/lib/pacman/db.lck
+sudo rm /var/lib/pacman/db.lck 2> /dev/null
 
 git submodule update --init --recursive
 

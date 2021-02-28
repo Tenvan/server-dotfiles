@@ -12,29 +12,33 @@ errorCheck() {
 
 inst() {
     PAKAGE_INST="${PAKAGE_INST} $1"
-    
-	eval "$PACKER -S $PACKER_ALL $1"
-	
-    retVal=$?
-    if [ $retVal -ne 0 ]; then
-        print "error on install: $1"
-		ERROR_PAKAGE_INST="${ERROR_PAKAGE_INST} $1"        
-    fi
+
+    if [ $DEBUG = true ]; then
+		eval "$PACKER -S $PACKER_ALL $1"
+		
+	    retVal=$?
+	    if [ $retVal -ne 0 ]; then
+	        print "error on install: $1"
+			ERROR_PAKAGE_INST="${ERROR_PAKAGE_INST} $1"        
+	    fi
+	fi
 }
 
 uninst() {
     PAKAGE_UNINST="${PAKAGE_UNINST} $1"
 
-    eval "$PACKER -R $PACKER_ALL $1"
-    
-    retVal=$?
-    if [ $retVal -ne 0 ]; then
-        print "error on uninstall: $1"
-		ERROR_PAKAGE_UNINST="${ERROR_PAKAGE_UNINST} $1"        
+    if [ $DEBUG = true ]; then
+	    eval "$PACKER -R $PACKER_ALL $1"
+	    
+	    retVal=$?
+	    if [ $retVal -ne 0 ]; then
+	        print "error on uninstall: $1"
+			ERROR_PAKAGE_UNINST="${ERROR_PAKAGE_UNINST} $1"        
+	    fi
     fi
 }
 
-sudo rm /var/lib/pacman/db.lck
+sudo rm /var/lib/pacman/db.lck 2> /dev/null
 
 ###########################
 # collect needed packages #
@@ -42,24 +46,18 @@ sudo rm /var/lib/pacman/db.lck
 
 # system packages
 inst arj
-inst ark
 inst bashtop
 inst bat
 inst bitwarden-cli-bin
-inst bootsplash-systemd
-inst bootsplash-theme-manjaro
 inst bpytop
 inst clamav
-inst clamtk
 inst cockpit
 inst cockpit-machines
 inst docker
 inst docker-compose
 inst exa
 inst find-the-command
-inst flatpak
 inst glances
-inst hardinfo
 inst htop
 inst iftop
 inst iotop
@@ -110,6 +108,17 @@ inst micro
 inst ripgrep
 inst tar
 
+#####################
+# collect rust apps #
+#####################
+
+inst bat
+inst fd
+inst procs
+inst ripgrep
+inst tokei
+inst git-delta
+
 # grub
 if [ $IS_GARUDA = true ]; then
 	inst grub-theme-garuda
@@ -117,6 +126,21 @@ fi
 if [ $IS_MANJARO != true ]; then
 	inst grub2-theme-archlinux
 	inst grub-theme-stylish-git
+fi
+
+###############################
+# uninstall unneeded packages #
+###############################
+if [ $DEBUG = false ]; then
+	eval "$PACKER -R --noconfirm $PAKAGE_UNINST"
+fi
+
+#################################
+# install all (needed) packages #
+#################################
+if [ $DEBUG = false ]; then
+	eval "$PACKER -S $PAKKU_ALL $PAKAGE_INST"
+	errorCheck "install packages"
 fi
 
 ## FINISHING #

@@ -30,7 +30,6 @@ oder in Einzelschritten (falls Probleme auftreten, ist hiermit die Suche einfach
 ```bash
 sh ~/.script/install_init.zsh
 sh ~/.script/install_base.zsh
-sh ~/.script/install_rust_apps.zsh
 sh ~/.script/install_vm.zsh
 sh ~/.script/install_finish.zsh
 ```
