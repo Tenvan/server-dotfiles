@@ -11,9 +11,6 @@ export IS_GARUDA=false
 export SCRIPTS="$HOME/.scripts"
 export PACKER=paru
 
-export DEBUG=false
-#export DEBUG=true
-
 if [ $LINUX_VERSION_NAME = "Archlinux" ]; then
 	export IS_ARCH=true
 fi
@@ -37,4 +34,4 @@ print "IsGaruda:      $IS_GARUDA"
 print "IsManjaro:     $IS_MANJARO"
 
 export MAKEFLAGS="-j$(nproc)"
-export PAKKU_ALL="--color always --needed --noconfirm "
+export PACKER_ALL="--quiet --color always --noconfirm "

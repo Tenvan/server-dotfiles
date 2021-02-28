@@ -9,20 +9,20 @@
 errorCheck() {
     retVal=$?
     if [ $retVal -ne 0 ]; then
-        print "abort installation script 'install_all': $1"
+        print "abort installation script 'install_init': $1"
         exit $retVal
     fi
 }
 
 sudo rm /var/lib/pacman/db.lck
 
-sudo pacman -S --noconfirm --needed git base-devel colorgcc go ruby rust
-errorCheck "installation base-devel"
-
 git submodule update --init --recursive
 
+# install paru
+yay -S --noconfirm --needed paru-bin
+errorCheck "installation aur manager"
+
 # Config pacman
-sudo pacman -S pamac-all
 sed 's/^#Color$/Color/g' </etc/pacman.conf >pacman.conf
 sudo mv pacman.conf /etc/
 sed 's/^.*ILoveCandy$/ILoveCandy/g' </etc/pamac.conf >pamac.conf
@@ -31,20 +31,18 @@ sed 's/^.*EnableAUR$/EnableAUR/g' </etc/pamac.conf >pamac.conf
 sudo mv pamac.conf /etc/
 sed 's/^.*KeepBuiltPkgs$/KeepBuiltPkgs/g' </etc/pamac.conf >pamac.conf
 sudo mv pamac.conf /etc/
+errorCheck "pamac config"
 
-# install aur manager
-pamac install --no-confirm pakku-git paru-git
-errorCheck "installation aur manager"
-
-# init mirror
-paru -S $PAKKU_ALL --noconfirm pacman-mirrorup
-pacman-mirrorup -v
+eval "$PACKER -S $PACKER_ALL git base-devel colorgcc go ruby rust"
+errorCheck "installation base-devel"
 
 # Prompt installieren
-paru -S $PAKKU_ALL ttf-meslo-nerd-font-powerlevel10k zsh-theme-powerlevel10k starship-bin
+eval "$PACKER -S $PACKER_ALL ttf-meslo-nerd-font-powerlevel10k zsh-theme-powerlevel10k"
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/zdharma/zinit/master/doc/install.sh)"
+errorCheck "installation prompt"
 
 zinit creinstall zsh-users/zsh-completions
+errorCheck "installation zsh-completions"
 
 # disable sudo password
 echo "Cmnd_Alias INSTALL = /usr/bin/pacman, /usr/share/pacman

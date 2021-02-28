@@ -1,58 +1,38 @@
-# Awesome Desktop
+# Server DotFiles ZSH
 
-- Komplette Konfiguration eines Awesome-Desktops.
-- Fest ausgelegt auf Dual-Monitor
-- Umschaltung zwischen Light/Dark Theme
+- Konfiguration Arch-Based Servers mit DotFiles
+- Schwerpunkt liegt auf der ZSH-Shell
 
-Als Basis dient eine Manajaro Full Cinnamon Installation, oder eine vergleichbare.
+Als Basis dient eine Manajaro Architect CLI Installation, oder eine vergleichbare.
+Alle Benötigten Paket werden per Script nachinstalliert.
 
 ## Installation
 
 Repository klonen
 
 ```bash
-git clone http://gitlab.ihr.infoniqa.local/one-time-de/linux-environments/dotfiles-developer-workstation.git
+git clone https://github.com/Tenvan/server-dotfiles.git
 ```
 
-und in das Homeverzeichnis verschieben:
+und in das Homeverzeichnis verschieben (mit BASH, die ZSH-Version ist WIP):
 ```bash
 shopt -s dotglob
 rsync -vrlptgo --include ".*" dotfiles-developer-workstation/* ~/
 rm -fr dotfiles-developer-workstation/
 ```
 
-Fehlende Pakete werden mit folgendem Batch nachinstalliert:
-
+Die benötigten Pakete werden Fehlende entweder komplett installiert:
 ```bash
-sh ~/Scripts/init_install.sh
-sh ~/Scripts/install_all.sh
+sh ~/install.zsh
 ```
 
-## Manuelle Konfiguration
-
-Einzige z.Zt. nötige manuelle Konfiguration ist die Anschlussdefinition der beiden Monitore.
-
-### Konfiguration der Anschlussnamen
-Hierfür muss im Homeverzeichnis eine Datei '.Xresources.monitor' angelegt werden, die folgenden Aufbau hat:
-
-```
-*monitor1: DP2
-*monitor2: DP3
+oder in Einzelschritten (falls Probleme auftreten, ist hiermit die Suche einfacher):
+```bash
+sh ~/.script/install_init.zsh
+sh ~/.script/install_base.zsh
+sh ~/.script/install_rust_apps.zsh
+sh ~/.script/install_vm.zsh
+sh ~/.script/install_finish.zsh
 ```
 
-Ermittelt werden können diese durch:
-
-```
-echo "*monitor1: DP2
-*monitor2: DP3"  > .Xresources.monitor
-
-xrandr | grep connected -w >> .Xresources.monitor
-code .Xresources.monitor
-```
-
-Mit Code die Datei dann entsprechend den Anschlüssen korrigieren.
-
-### Monitor Definition erstellen
-Mit 'arandr' die Monitoreinstellung vornehmen und in der Datei '~/.screenlayout/screenlayout.sh' speichern.
-
-Das Install-Script nochmal laufen lassen, anschließend neu booten.
+## Manuelle Konfiguration (WIP)
