@@ -17,8 +17,8 @@ git clone https://github.com/Tenvan/server-dotfiles.git
 und in das Homeverzeichnis verschieben (mit BASH, die ZSH-Version ist WIP):
 ```bash
 shopt -s dotglob
-rsync -vrlptgo --include ".*" dotfiles-developer-workstation/* ~/
-rm -fr dotfiles-developer-workstation/
+rsync -vrlptgo --include ".*" server-dotfiles/* ~/
+rm -fr server-dotfiles/
 ```
 
 Die benötigten Pakete werden Fehlende entweder komplett installiert:
