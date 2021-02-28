@@ -19,7 +19,7 @@ sudo rm /var/lib/pacman/db.lck
 git submodule update --init --recursive
 
 # install paru
-yay -S --noconfirm --needed paru-bin
+yay -Syy --noconfirm --needed paru-bin pamac-cli
 errorCheck "installation aur manager"
 
 # Config pacman
