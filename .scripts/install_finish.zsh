@@ -51,7 +51,7 @@ errorCheck "grub config"
 sudo micro /etc/default/grub
 
 sudo mkinitcpio -P
-update-grub
+sudo update-grub
 
 errorCheck "grub mkconfig"
 

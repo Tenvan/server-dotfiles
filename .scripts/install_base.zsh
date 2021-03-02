@@ -101,6 +101,7 @@ inst mono
 # file manager
 inst mc
 inst ranger
+inst ttf-devicons
 
 # installation of important editors
 inst micro
@@ -144,12 +145,12 @@ if [ $DEBUG = false ]; then
 fi
 
 ## FINISHING #
-if [ "$ERROR_PAKAGE_UNINST" -eq "" ]; then
+if [ "$ERROR_PAKAGE_UNINST" = "" ]; then
 	print 'No Errors on Uninstall'
 else
 	print "Errors in Uninstall: ${ERROR_PAKAGE_UNINST}"
 fi
-if [ "$ERROR_PAKAGE_INST" -eq "" ]; then
+if [ "$ERROR_PAKAGE_INST" = "" ]; then
 	print 'No Errors on Install'
 else
 	print "Errors on Install: ${ERROR_PAKAGE_INST}"
