@@ -2,42 +2,6 @@
 
 . ~/.scripts/defs.zsh
 
-errorCheck() {
-    retVal=$?
-    if [ $retVal -ne 0 ]; then
-        print "abort installation script 'install_base': $1"
-        exit $retVal
-    fi
-}
-
-inst() {
-    PAKAGE_INST="${PAKAGE_INST} $1"
-
-    if [ $DEBUG = true ]; then
-		eval "$PACKER -S $PACKER_ALL $1"
-		
-	    retVal=$?
-	    if [ $retVal -ne 0 ]; then
-	        print "error on install: $1"
-			ERROR_PAKAGE_INST="${ERROR_PAKAGE_INST} $1"        
-	    fi
-	fi
-}
-
-uninst() {
-    PAKAGE_UNINST="${PAKAGE_UNINST} $1"
-
-    if [ $DEBUG = true ]; then
-	    eval "$PACKER -R $PACKER_ALL $1"
-	    
-	    retVal=$?
-	    if [ $retVal -ne 0 ]; then
-	        print "error on uninstall: $1"
-			ERROR_PAKAGE_UNINST="${ERROR_PAKAGE_UNINST} $1"        
-	    fi
-    fi
-}
-
 sudo rm /var/lib/pacman/db.lck 2> /dev/null
 
 ###########################
@@ -56,7 +20,8 @@ inst cockpit-machines
 inst docker
 inst docker-compose
 inst exa
-inst find-the-command
+inst lsd
+uninst find-the-command
 inst glances
 inst htop
 inst iftop
@@ -70,28 +35,21 @@ inst openssh
 inst p7zip
 inst packagekit
 inst powershell-bin
-inst python
-inst python-psutil
-inst python-pygit2
-inst python-requests
-inst python-taskw
-inst python-xkbgroup
-inst python2-distutils-extra
 inst s-tui
-inst shell-color-scripts
 inst time
 inst timeshift
 inst unrar
 inst usermin
 inst webmin
+inst tar
 
 # language files
 inst man-pages-de
-inst aspell-de
-inst mythes-de
+uninst aspell-de
+uninst mythes-de
 
-if [ $IS_GARUDA = true ]; then
-	inst samba-support
+if [ $IS_MANJARO != true ]; then
+	inst manjaro-samba-settings
 fi
 
 inst git
@@ -106,8 +64,6 @@ inst ttf-devicons
 # installation of important editors
 inst micro
 
-inst ripgrep
-inst tar
 
 #####################
 # collect rust apps #
@@ -121,9 +77,6 @@ inst tokei
 inst git-delta
 
 # grub
-if [ $IS_GARUDA = true ]; then
-	inst grub-theme-garuda
-fi
 if [ $IS_MANJARO != true ]; then
 	inst grub2-theme-archlinux
 	inst grub-theme-stylish-git
