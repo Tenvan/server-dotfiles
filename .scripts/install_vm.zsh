@@ -50,6 +50,7 @@ inst qemu-arch-extra
 inst libvirt
 inst ebtables 
 inst dnsmasq
+inst virt-install
 
 ## FINISHING #
 if [ "$ERROR_PAKAGE_UNINST" -eq "" ]; then
