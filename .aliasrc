@@ -18,7 +18,8 @@ alias l='ls'
 alias l.="ls -A | egrep '^\.'"
 
 # Changing "ls" to "exa"
-if [ $(which exa) ]; then
+if [ -x "$(command -v exa)" ]; then
+	echo "init exa"
 	alias ls='exa -alghHi --color=always --colour-scale --group-directories-first' # my preferred listing
 	alias la='exa -alghHi --color=always --colour-scale --group-directories-first' # all files and dirs
 	alias ll='exa -alghHi --color=always --colour-scale --group-directories-first' # long format
@@ -26,7 +27,8 @@ if [ $(which exa) ]; then
 fi
 
 # Changing "ls" to "lsd"
-if [ $(which lsd) ]; then
+if [ -x "$(command -v lsd)" ]; then
+	echo "init lsd"
 	alias ls='lsd -ahiF' # my preferred listing
 	alias la='lsd -alhiF' # all files and dirs
 	alias ll='lsd -alhiF' # long format

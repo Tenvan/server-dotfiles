@@ -74,7 +74,7 @@ inst fd
 inst procs
 inst ripgrep
 inst tokei
-inst git-delta
+inst git-delta-bin
 
 # grub
 if [ $IS_MANJARO != true ]; then

@@ -8,11 +8,6 @@ sudo rm /var/lib/pacman/db.lck 2> /dev/null
 
 # powerline in linux console
 eval "$PACKER -S --needed --noconfirm terminus-font powerline-fonts"
-if [ $IS_GARUDA = true ]; then
-    eval "$PACKER -S $PAKKU_ALL terminess-powerline-font-git terminus-font powerline-fonts"
-else
-    eval "$PACKER -S $PAKKU_ALL terminus-font powerline-fonts"
-fi
 
 echo "KEYMAP=de
 FONT=ter-powerline-v12n
@@ -22,14 +17,11 @@ FONT_MAP=" | sudo tee /etc/vconsole.conf
 
 sed 's/.*GRUB_GFXMODE=.*$/GRUB_GFXMODE="1920x1080,auto"/g' </etc/default/grub >grub
 sudo mv -f grub /etc/default
-if [ $IS_GARUDA = true ]; then
-	sudo cp $SCRIPTS/setup/manjaro-cat.png /usr/share/grub/themes/garuda/background.png
-	sed 's/.*GRUB_THEME=.*$/GRUB_THEME="\/usr\/share\/grub\/themes\/garuda\/theme.txt"/g' </etc/default/grub >grub
-	sudo mv -f grub /etc/default
-fi
+
+inst manjaro-wallpapers-18.0
 
 if [ $IS_MANJARO = true ]; then
-	sudo cp $SCRIPTS/setup/manjaro-cat.png /usr/share/grub/themes/manjaro/background.png
+	sudo cp /usr/share/backgrounds/manjaro-wallpapers-18.0/manjaro-cat.jpg /usr/share/grub/themes/manjaro/background.png
 	sed 's/.*GRUB_THEME=.*$/GRUB_THEME="\/usr\/share\/grub\/themes\/manjaro\/theme.txt"/g' </etc/default/grub >grub
 	sudo mv -f grub /etc/default
 fi
@@ -42,7 +34,6 @@ errorCheck "grub config"
 
 sudo micro /etc/default/grub
 
-sudo mkinitcpio -P
 sudo update-grub
 
 errorCheck "grub mkconfig"
