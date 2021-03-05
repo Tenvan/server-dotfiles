@@ -297,3 +297,5 @@
 [gitflow "branch"]
 	master = master
 	develop = develop
+[advice]
+	addIgnoredFile = false
