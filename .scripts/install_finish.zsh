@@ -18,10 +18,11 @@ FONT_MAP=" | sudo tee /etc/vconsole.conf
 sed 's/.*GRUB_GFXMODE=.*$/GRUB_GFXMODE="1920x1080,auto"/g' </etc/default/grub >grub
 sudo mv -f grub /etc/default
 
-inst manjaro-wallpapers-18.0
+inst_now manjaro-wallpapers-18.0
+inst_now libmagick
 
 if [ $IS_MANJARO = true ]; then
-	sudo cp /usr/share/backgrounds/manjaro-wallpapers-18.0/manjaro-cat.jpg /usr/share/grub/themes/manjaro/background.png
+	sudo convert /usr/share/backgrounds/manjaro-wallpapers-18.0/manjaro-cat.jpg /usr/share/grub/themes/manjaro/background.png
 	sed 's/.*GRUB_THEME=.*$/GRUB_THEME="\/usr\/share\/grub\/themes\/manjaro\/theme.txt"/g' </etc/default/grub >grub
 	sudo mv -f grub /etc/default
 fi

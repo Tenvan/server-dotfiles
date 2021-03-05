@@ -61,6 +61,11 @@ inst() {
 	fi
 }
 
+inst_now() {
+	eval "$PACKER -S $PACKER_ALL $1"
+	errorCheck "Install $"
+}
+
 uninst() {
     PAKAGE_UNINST="${PAKAGE_UNINST} $1"
 
@@ -73,4 +78,9 @@ uninst() {
 			ERROR_PAKAGE_UNINST="${ERROR_PAKAGE_UNINST} $1"        
 	    fi
     fi
+}
+
+uninst_now() {
+	eval "$PACKER -R $PACKER_ALL $1"
+	errorCheck "Install $"
 }
