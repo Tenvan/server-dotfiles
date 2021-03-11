@@ -141,8 +141,8 @@ case ${TERM} in
 	xterm*|rxvt*|Eterm|aterm|kterm|gnome*)
 		[[ ! -f ~/.p10k-x.zsh ]] || source ~/.p10k-x.zsh
     ;;
-    screen*)
+    *)
 		[[ ! -f ~/.p10k-v.zsh ]] || source ~/.p10k-v.zsh
-    ;;
+	;;
 esac
  
