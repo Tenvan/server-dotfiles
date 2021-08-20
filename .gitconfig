@@ -1,6 +1,6 @@
 [user]
-	email = 
-	name = 
+	email = ralf.stich@gmail.com
+	name = stira
 
 [core]
 	editor = micro
@@ -8,7 +8,8 @@
 	pager = delta
 
 [credential]
-	helper = /usr/lib/git-core/git-credential-libsecret
+	helper = /usr/bin/git-credential-manager-core
+	credentialStore = cache
 
 [color]
 	ui = auto
@@ -300,3 +301,5 @@
 	
 [advice]
 	addIgnoredFile = false
+[credential "https://dev.azure.com"]
+	useHttpPath = true
