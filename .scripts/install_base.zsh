@@ -12,7 +12,6 @@ sudo rm /var/lib/pacman/db.lck 2> /dev/null
 inst arj
 inst bashtop
 inst bat
-inst bitwarden-cli-bin
 inst bpytop
 inst clamav
 inst cockpit
@@ -34,27 +33,21 @@ inst openconnect
 inst openssh
 inst p7zip
 inst packagekit
-inst powershell-bin
 inst s-tui
 inst time
-inst timeshift
 inst unrar
 inst usermin
 inst webmin
 inst tar
+inst update-grub
 
 # language files
 inst man-pages-de
 uninst aspell-de
 uninst mythes-de
 
-if [ $IS_MANJARO != true ]; then
-	inst manjaro-samba-settings
-fi
-
 inst git
 inst libsecret
-inst mono
 
 # file manager
 inst mc
@@ -74,13 +67,7 @@ inst fd
 inst procs
 inst ripgrep
 inst tokei
-inst git-delta-bin
-
-# grub
-if [ $IS_MANJARO != true ]; then
-	inst grub2-theme-archlinux
-	inst grub-theme-stylish-git
-fi
+inst git-delta
 
 ###############################
 # uninstall unneeded packages #

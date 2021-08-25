@@ -10,21 +10,6 @@ sudo rm /var/lib/pacman/db.lck 2> /dev/null
 
 git submodule update --init --recursive
 
-# install paru
-yay -Syy --noconfirm --needed paru-bin pamac-cli
-errorCheck "installation aur manager"
-
-# Config pacman
-sed 's/^#Color$/Color/g' </etc/pacman.conf >pacman.conf
-sudo mv pacman.conf /etc/
-sed 's/^.*ILoveCandy$/ILoveCandy/g' </etc/pamac.conf >pamac.conf
-sudo mv pamac.conf /etc/
-sed 's/^.*EnableAUR$/EnableAUR/g' </etc/pamac.conf >pamac.conf
-sudo mv pamac.conf /etc/
-sed 's/^.*KeepBuiltPkgs$/KeepBuiltPkgs/g' </etc/pamac.conf >pamac.conf
-sudo mv pamac.conf /etc/
-errorCheck "pamac config"
-
 eval "$PACKER -S $PACKER_ALL git base-devel colorgcc go ruby rust"
 errorCheck "installation base-devel"
 

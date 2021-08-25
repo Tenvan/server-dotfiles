@@ -3,18 +3,20 @@
 #####################
 # init distro check #
 #####################
+yay -S --needed --noconfirm lsb-release 
+
 export LINUX_VERSION_NAME=$(lsb_release -si)
 export IS_ARCH=false
 export IS_ARCO=false
 export IS_MANJARO=false
 export IS_GARUDA=false
 export SCRIPTS="$HOME/.scripts"
-export PACKER=paru
+export PACKER=yay
 
 #export DEBUG=true
 export DEBUG=false
 
-if [ $LINUX_VERSION_NAME = "Archlinux" ]; then
+if [ $LINUX_VERSION_NAME = "Arch" ]; then
 	export IS_ARCH=true
 fi
 
@@ -37,7 +39,7 @@ print "IsGaruda:      $IS_GARUDA"
 print "IsManjaro:     $IS_MANJARO"
 
 export MAKEFLAGS="-j$(nproc)"
-export PACKER_ALL="--quiet --color always --noconfirm "
+export PACKER_ALL="--quiet --color always --needed $@"
 
 errorCheck() {
     retVal=$?
