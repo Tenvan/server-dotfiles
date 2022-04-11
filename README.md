@@ -14,7 +14,11 @@ Repository klonen
 git clone https://github.com/Tenvan/server-dotfiles.git
 ```
 
-und in das Homeverzeichnis verschieben (mit BASH, die ZSH-Version ist WIP):
+und in das Homeverzeichnis verschieben:
+```zsh
+mv -fn server-dotfiles/*(DN) ~
+```
+
 ```bash
 shopt -s dotglob
 rsync -vrlptgo --include ".*" server-dotfiles/* ~/

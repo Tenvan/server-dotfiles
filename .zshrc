@@ -1,18 +1,19 @@
 #!/usr/bin/env zsh
 
-csource() {
-  if [[ -r "$@" ]]; then
-    source "$@"
-  fi
-}
+. ~/.scripts/defs
+
+# Use powerline
+USE_POWERLINE="true"
+
+# Source manjaro-zsh-configuration
+csource /usr/share/zsh/manjaro-zsh-config
+
+# Use manjaro zsh prompt
+csource /usr/share/zsh/manjaro-zsh-prompt
 
 ### Added by Zinit's installer
 if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
-    print -P "%F{33}▓▒░ %F{220}Installing %F{33}DHARMA%F{220} Initiative Plugin Manager (%F{33}zdharma/zinit%F{220})…%f"
-    command mkdir -p "$HOME/.zinit" && command chmod g-rwX "$HOME/.zinit"
-    command git clone https://github.com/zdharma/zinit "$HOME/.zinit/bin" && \
-        print -P "%F{33}▓▒░ %F{34}Installation successful.%f%b" || \
-        print -P "%F{160}▓▒░ The clone has failed.%f%b"
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/z-shell/zinit/main/doc/install.sh)"
 fi
 
 csource "$HOME/.zinit/bin/zinit.zsh"
@@ -22,18 +23,15 @@ autoload -Uz _zinit
 
 zinit wait lucid for \
   atinit"zicompinit; zicdreplay" \
-	zdharma/fast-syntax-highlighting \
-	zdharma/history-search-multi-word \
-	zinit-zsh/z-a-rust \
-	zinit-zsh/z-a-as-monitor \
-    zinit-zsh/z-a-patch-dl \
-    zinit-zsh/z-a-bin-gem-node \
+	zdharma-continuum/fast-syntax-highlighting \
+	zdharma-continuum/history-search-multi-word \
   atload"_zsh_autosuggest_start" \
       zsh-users/zsh-autosuggestions \
   blockf atpull'zinit creinstall -q .' \
       zsh-users/zsh-completions
 
 zinit ice depth=1; zinit light romkatv/powerlevel10k
+          
            
 ### End of Zinit's installer chunk
 
@@ -42,8 +40,9 @@ zinit ice depth=1; zinit light romkatv/powerlevel10k
 # confirmations, etc.) must go above this block; everything else may go below.
 csource "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 
-# test -f "$(which starship)" && eval "$(starship init zsh)"
-test -f "$(which neofetch)" && $(which neofetch)
+if [ -f "$(which neofetch)" ]; then
+	$(which neofetch)
+fi
 
 ## Options section
 setopt correct                                                  # Auto correct mistakes
@@ -55,31 +54,81 @@ setopt numericglobsort                                          # Sort filenames
 setopt nobeep                                                   # No beep
 setopt appendhistory                                            # Immediately append history instead of overwriting
 setopt histignorealldups                                        # If a new command is a duplicate, remove the older one
-setopt autocd                                                   # if only directory path is entered, cd there.
 setopt auto_pushd
+# Set some options about directories
 setopt pushd_ignore_dups
 setopt pushdminus
 
+setopt autocd                                                   # if only directory path is entered, cd there.
+setopt AUTO_CD  # If a command is issued that can’t be executed as a normal command,
+                # and the command is the name of a directory, perform the cd command
+                # to that directory.
+
+# Add some completions settings
+setopt ALWAYS_TO_END     # Move cursor to the end of a completed word.
+setopt AUTO_LIST         # Automatically list choices on ambiguous completion.
+setopt AUTO_MENU         # Show completion menu on a successive tab press.
+setopt AUTO_PARAM_SLASH  # If completed parameter is a directory, add a trailing slash.
+setopt COMPLETE_IN_WORD  # Complete from both ends of a word.
+unsetopt MENU_COMPLETE   # Do not autoselect the first completion entry.
+
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'       # Case insensitive tab completion
 zstyle ':completion:*' rehash true                              # automatically find new executables in path 
-zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"         # Colored completion (different colors for dirs/files/etc)
+zstyle ':completion:*' list-colors 'reply=("${PREFIX:+=(#bi)($PREFIX:t)*==34=34}:${(s.:.)LS_COLORS}")'  # Colored completion (different colors for dirs/files/etc)
 zstyle ':completion:*' completer _expand _complete _ignored _approximate
 zstyle ':completion:*' menu select=2
 zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
 zstyle ':completion:*:descriptions' format '%U%F{cyan}%d%f%u'
 
+# Load any custom zsh completions we've installed
+if [[ -d ~/.zsh-completions ]]; then
+  for completion in ~/.zsh-completions/*
+  do
+    if [[ -r "$completion" ]]; then
+      source "$completion"
+    else
+      echo "Can't read $completion"
+    fi
+  done
+fi
 
 # Speed up completions
 zstyle ':completion:*' accept-exact '*(N)'
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path ~/.cache/zcache
 
+# Miscellaneous settings
+setopt INTERACTIVE_COMMENTS  # Enable comments in interactive shell.
+setopt extended_glob # Enable more powerful glob features
+
 # automatically load bash completion functions
 autoload -U +X bashcompinit && bashcompinit
 
+# configure history
+setopt extended_history
+setopt hist_expire_dups_first
+setopt hist_ignore_all_dups
+setopt hist_ignore_dups
+setopt hist_ignore_space
+setopt hist_reduce_blanks
+setopt hist_save_no_dups
+setopt hist_verify
+setopt INC_APPEND_HISTORY
+unsetopt HIST_BEEP
+
+# Share your history across all your terminal windows
+setopt share_history
+
 HISTFILE=~/.zhistory
-HISTSIZE=50000
-SAVEHIST=10000
+HISTSIZE=100000
+SAVEHIST=100000
+
+export HISTIGNORE="ll:ls:cd:cd -:pwd:exit:date:* --help"
+
+# Long running processes should return time after they complete. Specified
+# in seconds.
+REPORTTIME=2
+TIMEFMT="%U user %S system %P cpu %*Es total"
 
 # create a zkbd compatible hash;
 # to add other keys to this hash, see: man 5 terminfo
@@ -122,19 +171,65 @@ if (( ${+terminfo[smkx]} && ${+terminfo[rmkx]} )); then
 	add-zle-hook-widget -Uz zle-line-finish zle_application_mode_stop
 fi
 
-# Add useful aliases 
-alias aup="pamac upgrade --aur"
-alias grubup="sudo update-grub"
-alias orphaned="sudo pacman -Rns $(pacman -Qtdq)"
-alias fixpacman="sudo rm /var/lib/pacman/db.lck"
-alias untar='tar -zxvf '
-alias wget='wget -c '
-alias speed='speedtest-cli --server 2406 --simple'
+# grc colorizes the output of a lot of commands. If the user installed it,
+# use it.
 
-# Set your countries like --country France --country Germany -- or more.
-alias upd='sudo reflector --country Germany --latest 5 --age 2 --fastest 5 --protocol https --sort rate --save /etc/pacman.d/mirrorlist && cat /etc/pacman.d/mirrorlist && sudo pacman -Syu'
+# Try and find the grc setup file
+if (( $+commands[grc] )); then
+  GRC_SETUP='/usr/local/etc/grc.bashrc'
+fi
+if (( $+commands[grc] )) && (( $+commands[brew] ))
+then
+  GRC_SETUP="$(brew --prefix)/etc/grc.bashrc"
+fi
+if [[ -r "$GRC_SETUP" ]]; then
+  source "$GRC_SETUP"
+fi
+unset GRC_SETUP
 
-csource ~/.aliasrc
+if (( $+commands[grc] ))
+then
+  function ping5(){
+    grc --color=auto ping -c 5 "$@"
+  }
+else
+  alias ping5='ping -c 5'
+fi
+
+# These need to be done after $PATH is set up so we can find
+# grc and exa
+
+# Set up colorized ls when gls is present - it's installed by grc
+# shellcheck disable=SC2154
+if (( $+commands[gls] )); then
+  alias ls="gls -F --color"
+  alias l="gls -lAh --color"
+  alias ll="gls -l --color"
+  alias la='gls -A --color'
+fi
+
+# When present, use exa instead of ls
+if (( $+commands[exa] )); then
+  if [[ -z "$EXA_TREE_IGNORE" ]]; then
+    EXA_TREE_IGNORE=".cache|cache|node_modules|vendor|.git"
+  fi
+fi
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+case ${TERM} in
+	xterm*|rxvt*|Eterm|aterm|kterm|gnome*)
+  		print "Init Powershell10k for XWindows"
+		  csource ~/.bin/.p10k-x.zsh
+    ;;
+    *)
+  		print "Init Powershell10k for vconsole"
+      csource ~/.bin/.p10k-v.zsh
+	  csource "$HOME/.profile"
+    ;;
+esac
+
+csource "$HOME/.aliasrc"
+csource "$CUSTOMS/.zshrc"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 case ${TERM} in

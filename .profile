@@ -1,28 +1,43 @@
 #!/usr/bin/env bash
-echo 'Running ~/.profile'
 
 export SCRIPTS="$HOME/.scripts"
 
+# mods korrigieren
+chmod +x $SCRIPTS/*
+
+export CUSTOMS="$HOME/.custom"
+export EDITOR=micro
+export VISUAL="$EDITOR"
+export FILEMANAGER="nemo"
+export TIME="/usr/bin/time -v "
+export TERM=xterm-256color
+
+# Development profile
 export ANDROID_SDK_ROOT="$HOME/Android/Sdk"
-export EDITOR=$(which micro)
-export MAIL=$(which thunderbird)
-# fix "xdg-open fork-bomb" export your preferred browser from here
-# export BROWSER=$(which firefox)
-export BROWSER=
+export JAVA_HOME="/usr/lib/jvm/java-8-openjdk"
+
 
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
-# Set $PATH if ~/.local/bin exist
-if [ -d "$HOME/.local/bin" ]; then
-    export PATH=$HOME/.local/bin:$PATH
-fi
-# yarn bin path
-if [ -d "$HOME/.yarn/bin" ]; then
-    export PATH=$HOME/.yarn/bin:$PATH
-fi
-# add android sdk path, if installed
-if [ -d "$HOME/Android/Sdk/tools" ]; then
-    export PATH="$HOME/Android/Sdk/tools:$PATH"
-fi
-
+# Conditional PATH additions
+for path_candidate in /Applications/Xcode.app/Contents/Developer/usr/bin \
+  /opt/local/bin \
+  /opt/local/sbin \
+  /usr/local/bin \
+  /usr/local/sbin \
+  ~/.cabal/bin \
+  ~/.cargo/bin \
+  ~/.rbenv/bin \
+  ~/.bin \
+  ~/.scripts \
+  ~/.local/bin \
+  ~/.yarn/bin \
+  ~/src/gocode/bin \
+  ~/gocode \
+  "$ANDROID_SDK_ROOT/platform-tools"
+do
+  if [[ -d "${path_candidate}" ]]; then
+    export PATH="${PATH}:${path_candidate}"
+  fi
+done

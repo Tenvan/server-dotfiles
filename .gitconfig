@@ -294,6 +294,10 @@
 	
 [http]
 	sslVerify = false
+
+[user]
+	email = ralf.stich@infoniqa.com
+	name = stira
 	
 [gitflow "branch"]
 	master = master
@@ -301,5 +305,6 @@
 	
 [advice]
 	addIgnoredFile = false
+
 [credential "https://dev.azure.com"]
 	useHttpPath = true

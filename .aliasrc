@@ -1,14 +1,18 @@
 #!/usr/bin/env bash
 
-# usefull
+# Add useful aliases 
 alias path='echo -e ${PATH//:/\\n}'
+alias grubup="sudo update-grub"
+alias orphaned="sudo pacman -Rns $(pacman -Qtdq)"
+alias untar='tar -zxvf '
+alias wget='wget -c '
+alias speed='speedtest-cli --server 2406 --simple'
 
 # Cleanup orphaned packages
 alias cleanup='sudo pacman -Rns $(pacman -Qtdq)'
 
 # get actual mirrors
-alias mirror_arch="pacman-mirrorup -v -m 10 -o mirrorlist; cat mirrorlist; sudo mv mirrorlist /etc/pacman.d/mirrorlist"
-alias mirror_manjaro="sudo pacman-mirrors -c Germany"
+alias mirror-upd="$HOME/.bin/update-mirrors"
 
 #list
 alias ls='ls --color=auto'
@@ -19,10 +23,11 @@ alias l.="ls -A | egrep '^\.'"
 
 # Changing "ls" to "exa"
 if [ -x "$(command -v exa)" ]; then
-	alias ls='exa -alghHi --color=always --colour-scale --group-directories-first' # my preferred listing
-	alias la='exa -alghHi --color=always --colour-scale --group-directories-first' # all files and dirs
-	alias ll='exa -alghHi --color=always --colour-scale --group-directories-first' # long format
-	alias lt='exa -aT -L3 --color=always --colour-scale --group-directories-first' # tree listing
+	alias l='exa -al --icons --git --time-style=long-iso --group-directories-first --color-scale'
+	alias ls='exa -alghHi --icons --git --color=always --colour-scale --group-directories-first' # my preferred listing
+	alias la='exa -alghHi  --icons --git --time-style=long-iso --color=always --colour-scale --group-directories-first' # all files and dirs
+	alias ll='exa -alghHi  --icons --git --time-style=long-iso --color=always --colour-scale --group-directories-first' # long format
+	alias lt='exa -aT -L3  --icons --git --time-style=long-iso --color=always --colour-scale --group-directories-first' # tree listing
 fi
 
 # Changing "ls" to "lsd"
@@ -50,30 +55,35 @@ alias userlist="cut -d: -f1 /etc/passwd"
 # Aliases for software managment
 # pacman or pm
 alias pacman='sudo pacman --color auto'
-alias update='sudo pacman -Syyu'
+alias update-fc='sudo fc-cache -fv'
 
-# paru as aur helper - updates everything
-alias upall="paru -Syyu --noconfirm"
+#package manager
+alias inst="yay -S --color always --needed"
+alias inst_over="yay -S --color always --needed --overwrite \*"
+alias uninst="yay -Rcn"
+alias upall="yay -Syyu --needed;flatpak update -v --noninteractive"
+alias search="yay -Ss --bottomup"
 alias upkeys="sudo pacman-key --refresh-keys"
 
-#grub update
-alias update-grub="sudo grub-mkconfig -o /boot/grub/grub.cfg"
-
-#hardware info --short
-alias hw="hwinfo --short"
-
-#Cleanup orphaned packages
-alias cleanup='sudo pacman -Rns $(pacman -Qtdq)'
+#package cleanup (old and cache)
+alias cleanup='cleanup-all'
 
 #get the error messages from journalctl
 alias jctl="journalctl -p 3 -xb"
 
 ### ALIASES ###
 
+alias killx="sudo systemctl restart lightdm"
+alias startx="sudo systemctl start lightdm"
+
 # navigation
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ~='cd $HOME'
+alias cdw='cd /media/WORKSPACE/$USER'
+alias cda='cd /media/WORKSPACE/$USER/Arduino'
+alias cdd='cd /media/WORKSPACE/$USER/DotNet'
+alias cdn='cd /media/WORKSPACE/$USER/Node'
 
 alias ed=$EDITOR
 
@@ -84,3 +94,23 @@ alias wb="curl -H 'Accept-Language: de' wttr.in/33034"
 # tests
 alias sys-emoji="curl https://unicode.org/Public/emoji/5.0/emoji-test.txt"
 alias sys-utf8="curl https://www.w3.org/2001/06/utf-8-test/UTF-8-demo.html"
+
+# display manager handling
+alias to-lightdm="sudo systemctl disable --now ly; sudo systemctl disable --now sddm; sudo systemctl enable --now lightdm; sudo systemctl start lightdm "
+
+# ssh 
+alias ssh="kitty +kitten ssh"
+
+#copy/paste all content of /etc/skel over to home folder - backup of config created - beware
+alias skel='[ -d ~/.config ] || mkdir ~/.config && cp -Rf ~/.config ~/.config-backup-$(date +%Y.%m.%d-%H.%M.%S) && cp -rf /etc/skel/* ~'
+
+#backup contents of /etc/skel to hidden backup folder in home/user
+alias bupskel='cp -Rf /etc/skel ~/.skel-backup-$(date +%Y.%m.%d-%H.%M.%S)'
+
+#copy bashrc-latest over on bashrc - cb= copy bashrc
+#alias cb='sudo cp /etc/skel/.bashrc ~/.bashrc && source ~/.bashrc'
+#copy /etc/skel/.zshrc over on ~/.zshrc - cb= copy zshrc
+alias cz='sudo cp /etc/skel/.zshrc ~/.zshrc && exec zsh'
+
+alias xm="xman"
+alias exp="expand"
