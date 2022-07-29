@@ -1,7 +1,9 @@
 #!/usr/bin/env zsh
+
 export DOT="$DOT;.zshrc"
 
 . ~/.scripts/defs
+
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
@@ -58,7 +60,7 @@ USE_POWERLINE="true"
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
-csource "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+# csource "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 
 # LS_COLORS
 csource /usr/share/LS_COLORS/dircolors.sh
@@ -232,8 +234,7 @@ csource "$HOME/.zinit/bin/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
-zinit ice atload"zpcdreplay" atclone'./zplug.zsh'
-zinit light g-plane/zsh-yarn-autocompletions
+# zinit ice atload"zpcdreplay" atclone'./zplug.zsh'
 
 zinit ice depth=1;
 
@@ -241,27 +242,16 @@ zinit light romkatv/powerlevel10k
 
 zinit wait lucid for \
     memark/zsh-dotnet-completion \
-    atinit"zicompinit; zicdreplay" \
     zdharma-continuum/fast-syntax-highlighting \
     zdharma-continuum/history-search-multi-word \
     memark/zsh-dotnet-completion \
     urbainvaes/fzf-marks \
     hlissner/zsh-autopair \
     junegunn/fzf-bin \
-    atload"zicdreplay" \
-        zsh-users/zsh-completions \
-        zsh-users/zsh-autosuggestions
-
-# zinit wait lucid for \
-#         b4b4r07/enhancd \
-#     atinit"zicompinit; zicdreplay" \
-#         zsh-users/zsh-syntax-highlighting \
-#     atload"_zsh_autosuggest_start; zicdreplay" \
-#         zsh-users/zsh-autosuggestions \
-#         memark/zsh-dotnet-completion \
-#     blockf atpull'zinit creinstall -q .' \
-#         zsh-users/zsh-completions \
-#         g-plane/zsh-yarn-autocompletions
+    zsh-users/zsh-completions \
+    zsh-users/zsh-autosuggestions
+        
+zinit light g-plane/zsh-yarn-autocompletions
 
 ### End of Zinit's installer chunk
 
@@ -397,5 +387,5 @@ esac
 
 csource "$HOME/.scripts/ranger.zsh"
 
-colorscript -e six
-colorscript -e hex
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+# [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
