@@ -16,7 +16,7 @@ git clone https://github.com/Tenvan/server-dotfiles.git
 
 und in das Homeverzeichnis verschieben:
 ```zsh
-mv -fn server-dotfiles/*(DN) ~
+mv -fv server-dotfiles/*(DN) ~
 ```
 
 ```bash
@@ -32,10 +32,15 @@ sh ~/install.zsh
 
 oder in Einzelschritten (falls Probleme auftreten, ist hiermit die Suche einfacher):
 ```bash
-sh ~/.script/install_init.zsh
-sh ~/.script/install_base.zsh
-sh ~/.script/install_vm.zsh
-sh ~/.script/install_finish.zsh
+~/.script/install_init
+~/.script/install_base
+~/.script/install_vm
+~/.script/install_finish
 ```
 
-## Manuelle Konfiguration (WIP)
+Optional:
+
+```bash
+~/.script/install_dev
+~/.script/install_vm
+```

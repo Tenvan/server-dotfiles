@@ -1,24 +1,26 @@
 #!/usr/bin/env bash
+export DOT="$DOT;.profile"
 
 export SCRIPTS="$HOME/.scripts"
 
 # mods korrigieren
-chmod +x $SCRIPTS/*
+if [ -r "$HOME/.bin" ]; then
+  chmod +x $HOME/.bin/*
+fi
+if [ -r "$SCRIPTS" ]; then
+  chmod +x $SCRIPTS/*
+fi
+
+. "$SCRIPTS/defs"
 
 export CUSTOMS="$HOME/.custom"
 export EDITOR=micro
+# export PAGER=mypager
 export VISUAL="$EDITOR"
-export FILEMANAGER="nemo"
 export TIME="/usr/bin/time -v "
-export TERM=xterm-256color
 
 # Development profile
-export ANDROID_SDK_ROOT="$HOME/Android/Sdk"
 export JAVA_HOME="/usr/lib/jvm/java-8-openjdk"
-
-
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Conditional PATH additions
 for path_candidate in /Applications/Xcode.app/Contents/Developer/usr/bin \
@@ -32,6 +34,7 @@ for path_candidate in /Applications/Xcode.app/Contents/Developer/usr/bin \
   ~/.bin \
   ~/.scripts \
   ~/.local/bin \
+  ~/.local/share/pnpm \
   ~/.yarn/bin \
   ~/src/gocode/bin \
   ~/gocode \
@@ -41,3 +44,5 @@ do
     export PATH="${PATH}:${path_candidate}"
   fi
 done
+
+csource "$CUSTOMS/.profile"

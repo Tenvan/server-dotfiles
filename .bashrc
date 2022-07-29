@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+export DOT="$DOT;.bashrc"
+
 [[ $- != *i* ]] && return
 
 . ~/.scripts/defs
@@ -134,3 +136,5 @@ fi
 test -f "$(which neofetch)" && $(which neofetch)
 
 csource "$CUSTOMS/.bashrc"
+
+colorscript -e six
