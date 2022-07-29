@@ -381,10 +381,10 @@ case ${TERM} in
     *)
         print "Init Powershell10k for vconsole"
         csource ~/.bin/.p10k-v.zsh
-        csource "$HOME/.profile"
     ;;
 esac
 
+csource "$HOME/.profile"
 csource "$HOME/.scripts/ranger.zsh"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.

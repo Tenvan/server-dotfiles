@@ -3,14 +3,6 @@ export DOT="$DOT;.profile"
 
 export SCRIPTS="$HOME/.scripts"
 
-# mods korrigieren
-if [ -r "$HOME/.bin" ]; then
-  chmod +x $HOME/.bin/*
-fi
-if [ -r "$SCRIPTS" ]; then
-  chmod +x $SCRIPTS/*
-fi
-
 . "$SCRIPTS/defs"
 
 export CUSTOMS="$HOME/.custom"
