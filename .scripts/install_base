@@ -1,0 +1,95 @@
+#!/usr/bin/env zsh
+
+. ~/.scripts/defs
+
+# Init Install
+initInstall "install_base"
+
+###########################
+# collect needed packages #
+###########################
+
+# Manjaro Packages
+if [ $IS_MANJARO = true ]; then
+    install samba
+    install manjaro-settings-samba
+fi
+
+# ArcoLinux Packages
+if [ $IS_ARCO = true ]; then
+    # Meta Packages
+    install arcolinux-meta-samba
+fi
+
+# system packages
+install arj
+install bashtop
+install bpytop
+install clamav
+install docker
+install docker-compose
+install exa
+install lsd
+install iftop
+install iotop
+install iptraf-ng
+install libsecret
+install lhasa
+install multitail
+install neofetch
+install openconnect
+install openssh
+install p7zip
+install packagekit
+install time
+install timeshift
+install unrar
+install tar
+install update-grub
+
+# language files
+install man-pages-de
+
+# file manager
+install ranger
+install ttf-devicons
+
+# installation of important editors
+install micro
+
+#####################
+# collect rust apps #
+#####################
+install bat
+install fd
+install procs
+install ripgrep
+install tokei
+install git-delta
+
+# powerline in linux console
+install awesome-terminal-fonts
+install terminus-font
+install powerline-fonts
+
+###############################
+# uninstall unneeded packages #
+###############################
+fullUninstall
+
+#################################
+# install all (needed) packages #
+#################################
+fullInstall
+
+## FINISHING #
+finish
+
+# ranger plugins
+mkdir "$HOME/.config/ranger/plugins"
+ln -sf /usr/share/ranger/plugins/ranger_devicons ~/.config/ranger/plugins/ranger_devicons
+
+# micro plugins
+micro -plugin install comment bounce editorconfig joinLines quoter filemanager bookmark \
+jump detectindent go snippets crystal quickfix wc manipulator \
+monokai-dark gotham-colors nordcolors

@@ -1,0 +1,89 @@
+#!/usr/bin/env zsh
+
+. ~/.scripts/defs.zsh
+
+## FINISHING ## Init Install
+initInstall "install_finish"
+
+# powerline in linux console
+install powerline-console-fonts-git
+
+###############################
+# uninstall unneeded packages #
+###############################
+fullUninstall
+
+#################################
+# install all (needed) packages #
+#################################
+fullInstall
+
+## FINISHING #
+finish
+
+echo "KEYMAP=de
+FONT=ter-powerline-v12n
+FONT_MAP=" | sudo tee /etc/vconsole.conf
+
+# grub config
+
+# grub config
+sed 's/.*GRUB_GFXMODE=.*$/GRUB_GFXMODE="3840x2160,2560x1080,1920x1080,auto"/g' </etc/default/grub >grub
+sudo mv -f grub /etc/default
+
+if [ $IS_MANJARO = true ]; then
+	sudo convert /usr/share/backgrounds/manjaro-wallpapers-18.0/manjaro-cat.jpg /usr/share/grub/themes/manjaro/background.png
+	errorCheck "convert manjaro grub image"
+	sed 's/.*GRUB_THEME=.*$/GRUB_THEME="\/usr\/share\/grub\/themes\/manjaro\/theme.txt"/g' </etc/default/grub >grub
+	sudo mv -f grub /etc/default
+	errorCheck "move manjaro grub file"
+	sudo cp $SCRIPTS/setup/manjaro-cat.png /usr/share/grub/themes/manjaro/background.png
+	sed 's/.*GRUB_THEME=.*$/GRUB_THEME="\/usr\/share\/grub\/themes\/manjaro\/theme.txt"/g' </etc/default/grub >grub
+	sudo mv -f grub /etc/default
+	echo '#
+#
+# ==> ADD "bootsplash.bootfile=bootsplash-themes/manjaro/bootsplash" to GRUB_CMDLINE_LINUX_DEFAULT
+#' | sudo tee -a /etc/default/grub
+
+	echo '#
+#
+# ==> ADD "bootsplash-manjaro" to HOOKS
+#' | sudo tee -a /etc/mkinitcpio.conf
+elif [ $IS_ARCO = true ]; then
+	sed 's/.*GRUB_THEME=.*$/GRUB_THEME="\/usr\/share\/grub\/themes\/Vimix\/theme.txt"/g' </etc/default/grub >grub
+	sudo mv -f grub /etc/default
+	errorCheck "move arco grub file"
+elif [ $IS_ARCO != true ]; then
+	sed 's/.*GRUB_THEME=.*$/GRUB_THEME="\/boot\/grub\/themes\/Stylish\/theme.txt"/g' </etc/default/grub >grub
+	sudo mv -f grub /etc/default
+elif [ $IS_ENDEA = false ]; then
+	sed 's/.*GRUB_THEME=.*$/GRUB_THEME="\/boot\/grub\/themes\/EndeavourOS\/theme.txt"/g' </etc/default/grub >grub
+	sudo mv -f grub /etc/default
+else
+	sed 's/.*GRUB_THEME=.*$/GRUB_THEME="\/boot\/grub\/themes\/Archlinux\/theme.txt"/g' </etc/default/grub >grub
+	sudo mv -f grub /etc/default
+fi
+errorCheck "grub config"
+
+sudo micro /etc/mkinitcpio.conf
+sudo micro /etc/default/grub
+
+sudo mkinitcpio -P
+sudo grub-mkconfig -o /boot/grub/grub.cfg
+errorCheck "grub mkconfig"
+
+# login screen console
+sudo cp $SCRIPTS/issue /etc
+
+sudo usermod -aG docker $USER
+
+###########################
+# enable services
+
+# nodejs tools for editors
+sudo npm uninstall -g eslint jshint jsxhint stylelint sass-lint markdownlint-cli raml-cop typescript tern js-beautify iconv-lite
+errorCheck "uninstall global npm"
+
+yarn global upgrade
+yarn global add eslint jshint jsxhint stylelint sass-lint markdownlint-cli raml-cop typescript tern js-beautify iconv-lite
+errorCheck "install global yarn"
