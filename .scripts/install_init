@@ -29,16 +29,18 @@ if [ -f /etc/pamac.conf ]; then
 	errorCheck "pamac config"
 fi
 
-eval "$PACKER -S $PACKER_ALL git base-devel colorgcc go ruby rust"
+sudo pacman -S --needed git base-devel colorgcc go ruby rust
 errorCheck "installation base-devel"
+
+# paru installieren
+git clone https://aur.archlinux.org/paru.git
+cd paru
+makepkg -si
 
 # Prompt installieren
 install ttf-meslo-nerd-font-powerlevel10k
 install zsh-theme-powerlevel10k
 errorCheck "installation prompt"
-
-zinit creinstall zsh-users/zsh-completions
-errorCheck "installation zsh-completions"
 
 # disable sudo password
 echo "Cmnd_Alias INSTALL = /usr/bin/pacman, /usr/share/pacman
@@ -50,16 +52,6 @@ $USER ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/100-myrules
 chmod -R -v +x ~/.scripts
 chmod -R -v +x ~/.bin
 errorCheck "set script flags"
-
-###############################
-# uninstall unneeded packages #
-###############################
-fullUninstall
-
-#################################
-# install all (needed) packages #
-#################################
-fullInstall
 
 ## FINISHING #
 finish

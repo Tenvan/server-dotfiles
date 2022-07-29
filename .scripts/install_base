@@ -25,7 +25,6 @@ fi
 install arj
 install bashtop
 install bpytop
-install clamav
 install docker
 install docker-compose
 install exa
@@ -40,7 +39,6 @@ install neofetch
 install openconnect
 install openssh
 install p7zip
-install packagekit
 install time
 install timeshift
 install unrar
@@ -71,6 +69,8 @@ install git-delta
 install awesome-terminal-fonts
 install terminus-font
 install powerline-fonts
+install ttf-meslo-nerd-font-powerlevel10k
+install zsh-theme-powerlevel10k
 
 ###############################
 # uninstall unneeded packages #

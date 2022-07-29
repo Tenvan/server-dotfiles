@@ -237,21 +237,19 @@ autoload -Uz _zinit
 # zinit ice atload"zpcdreplay" atclone'./zplug.zsh'
 
 zinit ice depth=1;
+zinit light g-plane/zsh-yarn-autocompletions
 
 zinit light romkatv/powerlevel10k
 
 zinit wait lucid for \
-    memark/zsh-dotnet-completion \
     zdharma-continuum/fast-syntax-highlighting \
     zdharma-continuum/history-search-multi-word \
-    memark/zsh-dotnet-completion \
     urbainvaes/fzf-marks \
     hlissner/zsh-autopair \
     junegunn/fzf-bin \
     zsh-users/zsh-completions \
     zsh-users/zsh-autosuggestions
         
-zinit light g-plane/zsh-yarn-autocompletions
 
 ### End of Zinit's installer chunk
 
@@ -283,12 +281,12 @@ setopt COMPLETE_IN_WORD  # Complete from both ends of a word.
 unsetopt MENU_COMPLETE   # Do not autoselect the first completion entry.
 
 zstyle ':completion:*' menu select=2
-# zstyle ':completion:*' rehash true                              # automatically find new executables in path
-# zstyle ':completion:*' list-colors 'reply=("${PREFIX:+=(#bi)($PREFIX:t)*==34=34}:${(s.:.)LS_COLORS}")'  # Colored completion (different colors for dirs/files/etc)
+zstyle ':completion:*' rehash true                              # automatically find new executables in path
+zstyle ':completion:*' list-colors 'reply=("${PREFIX:+=(#bi)($PREFIX:t)*==34=34}:${(s.:.)LS_COLORS}")'  # Colored completion (different colors for dirs/files/etc)
 
-# zstyle ':completion:*' completer _expand _complete _ignored _approximate
-# zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
-# zstyle ':completion:*:descriptions' format '%U%F{cyan}%d%f%u'
+zstyle ':completion:*' completer _expand _complete _ignored _approximate
+zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
+zstyle ':completion:*:descriptions' format '%U%F{cyan}%d%f%u'
 
 # Load SSH and GPG agents via keychain.
 

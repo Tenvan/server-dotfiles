@@ -6,8 +6,6 @@ csource() {
   fi
 }
 
-csource ~/.scripts/sounds
-
 export NVM_DIR="$HOME/.nvm"
 csource /usr/share/nvm/nvm.sh
 
@@ -24,7 +22,7 @@ SCRIPTS="$HOME/.scripts"
 
 DEBUG=false
 
-PACTOOL=$PACKER
+PACTOOL=pacman
 
 if [ -x "$(command -v yay)" ]; then
   export PACTOOL=yay
@@ -63,7 +61,7 @@ fi
 # echo "AUR Manager...: $PACKER"
 
 MAKEFLAGS="-j$(nproc)"
-PAKKER_ALL="--color always --needed --useask --overwrite \* $@" 
+PAKKER_ALL="--color always --needed --overwrite \* $@" 
 initInstall() {
 	INSTALL_SCRIPT=$1
 	echo "Step: init Install '$INSTALL_SCRIPT'"
@@ -79,7 +77,6 @@ install() {
 	    retVal=$?
 	    if [ $retVal -ne 0 ]; then
 	        echo "error on install: $1"
-			sound error
 			ERROR_PAKAGE_INST="${ERROR_PAKAGE_INST} $1"        
 	    fi
     fi
@@ -100,7 +97,6 @@ uninstall() {
     
     retVal=$?
     if [ $retVal -ne 0 ]; then
-		sound error &
         echo "error on uninstall: $1"
 		ERROR_PAKAGE_UNINST="${ERROR_PAKAGE_UNINST} $1"        
     fi
@@ -116,7 +112,6 @@ fullUninstall() {
 errorCheck() {
     retVal=$?
     if [ $retVal -ne 0 ]; then
-		sound error &
         echo "abort installation script '$INSTALL_SCRIPT': $1 ($retVal)"
         exit $retVal
     fi
