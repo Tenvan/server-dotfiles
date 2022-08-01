@@ -93,9 +93,6 @@ alias sys-utf8="curl https://www.w3.org/2001/06/utf-8-test/UTF-8-demo.html"
 # display manager handling
 alias to-lightdm="sudo systemctl disable --now ly; sudo systemctl disable --now sddm; sudo systemctl enable --now lightdm; sudo systemctl start lightdm "
 
-# ssh 
-alias ssh="kitty +kitten ssh"
-
 #copy/paste all content of /etc/skel over to home folder - backup of config created - beware
 alias skel='[ -d ~/.config ] || mkdir ~/.config && cp -Rf ~/.config ~/.config-backup-$(date +%Y.%m.%d-%H.%M.%S) && cp -rf /etc/skel/* ~'
 
