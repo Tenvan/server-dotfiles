@@ -22,9 +22,13 @@ if [ $IS_ARCO = true ]; then
 fi
 
 # system packages
+install archey4
+install alsi
 install arj
 install bashtop
 install bpytop
+install cpufetch
+install sysinfo
 install docker
 install docker-compose
 install exa

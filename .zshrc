@@ -1,6 +1,9 @@
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
+
+typeset -g POWERLEVEL9K_INSTANT_PROMPT=off
+
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
@@ -101,25 +104,6 @@ csource /usr/share/LS_COLORS/dircolors.sh
 
 # Get Terminal Emulator
 TERM_EMULATOR=$(ps -h -o comm -p $PPID)
-
-# ░█▀█░█▀▀░█▀█░█▀▀░█▀▀░▀█▀░█▀▀░█░█
-# ░█░█░█▀▀░█░█░█▀▀░█▀▀░░█░░█░░░█▀█
-# ░▀░▀░▀▀▀░▀▀▀░▀░░░▀▀▀░░▀░░▀▀▀░▀░▀
-
-if [ -f "$(which neofetch)" ]; then
-    if [[ "$TERM_EMULATOR" == *"kitty"* ]];
-    then
-        # kitty
-        neofetch --backend 'kitty'
-    elif [[  "$TERM_EMULATOR" == *"tmux"*  ]] || [[ "$TERM_EMULATOR" == "login" ]];
-    then
-        # tmux
-        neofetch --backend 'w3m' --ascii_distro 'arch_small'
-    else
-        # xterm and rxvt
-        neofetch --backend 'w3m' --xoffset 40 --yoffset 40 --gap 0
-    fi
-fi
 
 # ░█░░░█▀█░█▀▀░█▀█░█░░░█▀▀
 # ░█░░░█░█░█░░░█▀█░█░░░█▀▀
@@ -366,15 +350,11 @@ fi
 # These need to be done after $PATH is set up so we can find
 # grc and exa
 
-# When present, use exa instead of ls
-if (( $+commands[exa] )); then
-    if [[ -z "$EXA_TREE_IGNORE" ]]; then
-        EXA_TREE_IGNORE=".cache|cache|node_modules|vendor|.git"
-    fi
-fi
-
 csource "$HOME/.profile"
 csource "$HOME/.scripts/ranger.zsh"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+cpufetch
+pfetch
