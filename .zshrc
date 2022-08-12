@@ -354,7 +354,6 @@ csource "$HOME/.profile"
 csource "$HOME/.scripts/ranger.zsh"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+csource ~/.bin/.p10k.zsh
 
-cpufetch
-pfetch
+archey4

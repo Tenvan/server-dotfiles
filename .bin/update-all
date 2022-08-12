@@ -3,7 +3,7 @@
 . ~/.scripts/defs
 
 # Snapshot erstellen
-sudo timeshift --create
+# sudo timeshift --btrfs --create
 
 # System Update
 $PACTOOL -Syyu --needed

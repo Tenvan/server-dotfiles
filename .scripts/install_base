@@ -28,7 +28,6 @@ install arj
 install bashtop
 install bpytop
 install cpufetch
-install sysinfo
 install docker
 install docker-compose
 install exa
@@ -40,11 +39,11 @@ install libsecret
 install lhasa
 install multitail
 install neofetch
+install pfetch
 install openconnect
 install openssh
 install p7zip
 install time
-install timeshift
 install unrar
 install tar
 install update-grub
