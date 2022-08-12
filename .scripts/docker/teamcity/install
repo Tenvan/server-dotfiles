@@ -1,0 +1,35 @@
+#!/usr/bin/env zsh
+
+source ./config
+ 
+# Ziel Ordner für volume vorbereiten
+if [ -d "$tc_volume_dir/datadir" ]; then
+    echo "tc_volume_dir datadir '$data_dir/datadir' exists, reuse it."
+else    
+    echo "tc_volume_dir datadir '$data_dir/datadir' does not exists, create it!"
+    sudo mkdir -p $tc_volume_dir/datadir
+    sudo chmod 777 $tc_volume_dir/datadir
+fi
+
+if [ -d "$tc_volume_dir/logs" ]; then
+    echo "tc_volume_dir logs '$data_dir/logs' exists, reuse it."
+else    
+    echo "tc_volume_dir logs '$data_dir/logs' does not exists, create it!"
+    sudo mkdir -p $tc_volume_dir/logs
+    sudo chmod 777 $tc_volume_dir/logs
+fi
+
+sudo docker pull jetbrains/teamcity-server
+ 
+sudo docker run \
+    -dit \
+    --privileged \
+    --restart unless-stopped \
+    --name $tc_container \
+    -v $tc_volume_dir/datadir:/data/teamcity_server/datadir \
+    -v $tc_volume_dir/logs:/opt/teamcity/logs \
+    -p 8080:8111 \
+    jetbrains/teamcity-server
+
+# Docker Prozesse prüfen
+docker ps -a

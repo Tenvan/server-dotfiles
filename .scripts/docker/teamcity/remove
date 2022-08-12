@@ -1,0 +1,15 @@
+#!/usr/bin/env zsh
+
+source ./config
+
+echo "Aktuell installierte Container:"
+docker container ls
+
+echo "Stoppe: $tc_container"
+docker container stop $tc_container
+
+echo "Entferne: $tc_container und andere unbenutzte Container"
+docker container prune --force
+
+echo "Aktuell installierte Container:"
+docker container ls

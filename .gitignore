@@ -1,2 +1,21 @@
 **/*
 !.gitignore
+
+# Ausnahmen im home folder
+!.dir_colors
+!README.MD
+
+# Ausnahmen Script Folder
+!.scripts
+!.scripts/**/*
+!.bin
+!.bin/**/*
+
+# Ausnahmen Samples in Custom Folder
+!.custom/*.sample
+
+# Ausnahmen im .local folder
+!.local
+!.local/share
+
+**/.history

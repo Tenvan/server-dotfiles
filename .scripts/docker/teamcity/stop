@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+source ./config
+
+echo "Aktuell installierte Container:"
+docker container ls
+
+echo "Stoppe: $tc_container"
+docker container stop $tc_container

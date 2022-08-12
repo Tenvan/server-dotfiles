@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+
+source ./config
+
+echo "Aktuell installierte Container:"
+docker container ls
+
+echo "Logge: $tc_container"
+docker logs $tc_container -n 100 -f

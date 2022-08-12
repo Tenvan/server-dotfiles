@@ -53,12 +53,6 @@ elif [ $IS_ARCO = true ]; then
 	sed 's/.*GRUB_THEME=.*$/GRUB_THEME="\/usr\/share\/grub\/themes\/Vimix\/theme.txt"/g' </etc/default/grub >grub
 	sudo mv -f grub /etc/default
 	errorCheck "move arco grub file"
-elif [ $IS_ARCO != true ]; then
-	sed 's/.*GRUB_THEME=.*$/GRUB_THEME="\/boot\/grub\/themes\/Stylish\/theme.txt"/g' </etc/default/grub >grub
-	sudo mv -f grub /etc/default
-elif [ $IS_ENDEA = false ]; then
-	sed 's/.*GRUB_THEME=.*$/GRUB_THEME="\/boot\/grub\/themes\/EndeavourOS\/theme.txt"/g' </etc/default/grub >grub
-	sudo mv -f grub /etc/default
 else
 	sed 's/.*GRUB_THEME=.*$/GRUB_THEME="\/boot\/grub\/themes\/Archlinux\/theme.txt"/g' </etc/default/grub >grub
 	sudo mv -f grub /etc/default
@@ -81,9 +75,6 @@ sudo usermod -aG docker $USER
 # enable services
 
 # nodejs tools for editors
-sudo npm uninstall -g eslint jshint jsxhint stylelint sass-lint markdownlint-cli raml-cop typescript tern js-beautify iconv-lite
-errorCheck "uninstall global npm"
-
 yarn global upgrade
 yarn global add eslint jshint jsxhint stylelint sass-lint markdownlint-cli raml-cop typescript tern js-beautify iconv-lite
 errorCheck "install global yarn"

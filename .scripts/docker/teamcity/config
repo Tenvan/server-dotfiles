@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+
+# Konfiguration TeamCity Server
+export tc_volume_dir=/srv/teamcity
+export tc_container=teamcity

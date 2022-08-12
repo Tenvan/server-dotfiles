@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+
+source ./config
+
+echo "Aktuell installierte Container:"
+docker container ls
+
+echo "Starte: $tc_container"
+docker container start $tc_container
