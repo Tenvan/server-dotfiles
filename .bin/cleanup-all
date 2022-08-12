@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+
+pacman -Sccd --noconfirm
+yay -Sccd --noconfirm
+paru -Sccd --noconfirm
+yarn cache clean --all
+sudo rm -fr "$HOME/.cache"
+sudo rm -fr "$HOME/.npm"
+sudo rm -fr "$HOME/.yarn/berry/cache"
