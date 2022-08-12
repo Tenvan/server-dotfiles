@@ -53,11 +53,6 @@ alias unlock="sudo rm /var/lib/pacman/db.lck"
 #userlist
 alias userlist="cut -d: -f1 /etc/passwd"
 
-# Aliases for software managment
-# pacman or pm
-alias pacman='sudo pacman --color auto'
-alias update-fc='sudo fc-cache -fv'
-
 #package manager
 alias inst="$PACTOOL -S --color always --needed"
 alias inst_over="$PACTOOL -S --color always --needed --overwrite \*"
