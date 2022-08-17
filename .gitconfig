@@ -297,7 +297,3 @@
 	
 [advice]
 	addIgnoredFile = false
-
-[url "ssh://git@github.com/"]
-    insteadOf = http://gitub.com/
-    insteadOf = https://gitub.com/
