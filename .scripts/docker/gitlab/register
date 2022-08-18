@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+
+source ./config
+
+# docker run --rm -it -v /srv/gitlab-runner/config:/etc/gitlab-runner gitlab/gitlab-runner register
+echo "Runner registrieren:"
+docker run --rm -it  \
+    -v $config_dir:/etc/gitlab-runner \
+    gitlab/gitlab-runner register
+
+sudo micro "$config_dir/config.toml"

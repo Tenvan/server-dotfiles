@@ -1,0 +1,27 @@
+#!/usr/bin/env zsh
+
+source ./config
+
+# Ziel Ordner für volume vorbereiten
+if [ -d "$config_dir" ]; then
+    echo "mssql datadir '$config_dir' exists, reuse it."
+else
+    echo "mssql datadir '$config_dir' does not exists, create it!"
+    sudo mkdir -p $config_dir
+    sudo chmod 777 $config_dir
+fi
+
+docker run -d --restart unless-stopped \
+    --name $container_name \
+    -v $config_dir:/etc/gitlab-runner \
+    -v $config_dir/home:/home/gitlab-runner \
+    -v /var/run/docker.sock:/var/run/docker.sock \
+    gitlab/gitlab-runner:latest
+
+# Docker Prozesse prüfen
+docker ps -a
+
+docker stop $container_name
+
+# Docker Prozesse prüfen
+docker ps -a
