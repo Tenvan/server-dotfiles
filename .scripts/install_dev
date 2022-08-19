@@ -32,6 +32,7 @@ install yarn
 install tk
 install nsis
 install jq
+install python-pip
 
 # DotNet/Mono Setup
 install dotnet-sdk

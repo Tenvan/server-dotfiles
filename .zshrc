@@ -225,22 +225,25 @@ csource "$HOME/.zinit/bin/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
-# zinit ice atload"zpcdreplay" atclone'./zplug.zsh'
-
 zinit ice depth=1;
-zinit light g-plane/zsh-yarn-autocompletions
 
-zinit light romkatv/powerlevel10k
+zinit load romkatv/powerlevel10k
 
 zinit wait lucid for \
-    zdharma-continuum/fast-syntax-highlighting \
-    zdharma-continuum/history-search-multi-word \
-    urbainvaes/fzf-marks \
-    hlissner/zsh-autopair \
-    junegunn/fzf-bin \
-    zsh-users/zsh-completions \
-    zsh-users/zsh-autosuggestions
-        
+        b4b4r07/enhancd \
+        junegunn/fzf-bin \
+        g-plane/icd \
+    atinit"zicompinit; zicdreplay" \
+        zdharma-continuum/fast-syntax-highlighting \
+        zdharma-continuum/history-search-multi-word \
+    atload"_zsh_autosuggest_start; zicdreplay" \
+        zsh-users/zsh-autosuggestions \
+        memark/zsh-dotnet-completion \
+    blockf atpull'zinit creinstall -q .' \
+        zsh-users/zsh-completions
+
+zinit ice atload"zpcdreplay" atclone'./zplug.zsh'
+zinit light g-plane/zsh-yarn-autocompletions       
 
 ### End of Zinit's installer chunk
 
@@ -248,12 +251,16 @@ zinit wait lucid for \
 # ░█░░░█░█░█░█░█▀▀░█░░░█▀▀░░█░░░█░░█░█░█░█░▀▀█
 # ░▀▀▀░▀▀▀░▀░▀░▀░░░▀▀▀░▀▀▀░░▀░░▀▀▀░▀▀▀░▀░▀░▀▀▀
 
+zstyle ':completion:*:descriptions' format '%U%F{cyan}%d%f%u'
+zstyle ':completion:*:messages' format '%d'
+zstyle ':completion:*:warnings' format 'No matches for: %d'
+zstyle ':completion:*' completer _expand _complete _ignored _approximate
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*' list-colors 'reply=("${PREFIX:+=(#bi)($PREFIX:t)*==34=34}:${(s.:.)LS_COLORS}")'  # Colored completion (different colors for dirs/files/etc)
+zstyle ':completion:*' menu select=2
 zstyle ':completion:*' rehash true
-# zstyle ':completion:*' verbose yes
-# zstyle ':completion:*:descriptions' format '%B%d%b'
-# zstyle ':completion:*:messages' format '%d'
-# zstyle ':completion:*:warnings' format 'No matches for: %d'
-# zstyle ':completion:*' group-name ''
+zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
+zstyle ':completion:*' verbose yes
 
 # Case-insensitive (all), partial-word and then substring completion
 zstyle ":completion:*" matcher-list \
@@ -270,14 +277,6 @@ setopt AUTO_MENU         # Show completion menu on a successive tab press.
 setopt AUTO_PARAM_SLASH  # If completed parameter is a directory, add a trailing slash.
 setopt COMPLETE_IN_WORD  # Complete from both ends of a word.
 unsetopt MENU_COMPLETE   # Do not autoselect the first completion entry.
-
-zstyle ':completion:*' menu select=2
-zstyle ':completion:*' rehash true                              # automatically find new executables in path
-zstyle ':completion:*' list-colors 'reply=("${PREFIX:+=(#bi)($PREFIX:t)*==34=34}:${(s.:.)LS_COLORS}")'  # Colored completion (different colors for dirs/files/etc)
-
-zstyle ':completion:*' completer _expand _complete _ignored _approximate
-zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
-zstyle ':completion:*:descriptions' format '%U%F{cyan}%d%f%u'
 
 # Load SSH and GPG agents via keychain.
 
