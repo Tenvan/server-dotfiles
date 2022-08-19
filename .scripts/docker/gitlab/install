@@ -9,12 +9,14 @@ else
     echo "mssql datadir '$config_dir' does not exists, create it!"
     sudo mkdir -p $config_dir
     sudo chmod 777 $config_dir
+    sudo mkdir -p $config_home
+    sudo chmod 777 $config_home
 fi
 
 docker run -d --restart unless-stopped \
     --name $container_name \
     -v $config_dir:/etc/gitlab-runner \
-    -v $config_dir/home:/home/gitlab-runner \
+    -v $config_home:/home/gitlab-runner \
     -v /var/run/docker.sock:/var/run/docker.sock \
     gitlab/gitlab-runner:latest
 
