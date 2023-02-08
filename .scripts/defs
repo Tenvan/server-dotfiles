@@ -25,9 +25,34 @@ SCRIPTS="$HOME/.scripts"
 
 DEBUG=false
 
-PACTOOL=pacman
-if [ IS_FEDORA ]; then
-    PACTOOL=sudo dnf
+#DEBUG=true
+ERROR_PAKAGE_UNINST=
+ERROR_PAKAGE_INST=
+
+if [ "$LINUX_VERSION_NAME" = "Arch" ]; then
+	IS_ARCH=true
+fi
+
+if [ "$LINUX_VERSION_NAME" = "ArcoLinux" ]; then
+	IS_ARCO=true
+fi
+
+if [ "$LINUX_VERSION_NAME" = "ManjaroLinux" ]; then
+	IS_MANJARO=true
+fi
+
+if [ "$LINUX_VERSION_NAME" = "Fedora Linux" ]; then
+	IS_FEDORA=true
+fi
+
+if [ "$LINUX_VERSION_NAME" = "RHEL" ]; then
+	IS_RHEL=true
+fi
+
+if [ "$IS_FEDORA" = true ]; then
+    PACTOOL=dnf
+else
+	PACTOOL=pacman
 fi
 
 if [ -x "$(command -v yay)" ]; then
@@ -38,41 +63,24 @@ if [ -x "$(command -v paru)" ]; then
 fi
 
 PACKER="$PACTOOL"
-
-#DEBUG=true
-ERROR_PAKAGE_UNINST=
-ERROR_PAKAGE_INST=
-
-if [ $LINUX_VERSION_NAME = "Arch" ]; then
-	IS_ARCH=true
-fi
-
-if [ $LINUX_VERSION_NAME = "ArcoLinux" ]; then
-	IS_ARCO=true
-fi
-
-if [ $LINUX_VERSION_NAME = "ManjaroLinux" ]; then
-	IS_MANJARO=true
-fi
-
-if [ $LINUX_VERSION_NAME = "Fedora Linux" ]; then
-	IS_FEDORA=true
-fi
-
-if [ $LINUX_VERSION_NAME = "RHEL" ]; then
-	IS_RHEL=true
-fi
-
-echo "Linux Version.: $LINUX_VERSION_NAME"
-echo "IsArch........: $IS_ARCH"
-echo "IsArco........: $IS_ARCO"
-echo "IsManjaro.....: $IS_MANJARO"
-echo "IsFedora......: $IS_FEDORA"
-echo "IsRHEL........: $IS_RHEL"
-echo "AUR Manager...: $PACKER"
-
 MAKEFLAGS="-j$(nproc)"
-PAKKER_ALL="--color always --needed --overwrite \* $@" 
+
+if [ "$IS_FEDORA" = true ]; then
+	PACKER_ALL="--verbose $@" 
+else
+	PACKER_ALL="--color always --needed --overwrite \* $@" 
+fi
+		
+# echo "Linux Version..: $LINUX_VERSION_NAME"
+# echo "IsArch.........: $IS_ARCH"
+# echo "IsArco.........: $IS_ARCO"
+# echo "IsManjaro......: $IS_MANJARO"
+# echo "IsFedora.......: $IS_FEDORA"
+# echo "IsRHEL.........: $IS_RHEL"
+# echo "Package Manager: $PACTOOL"
+# echo "AUR Manager....: $PACKER"
+# echo "Packer Params..: $PACKER_ALL"
+
 initInstall() {
 	INSTALL_SCRIPT=$1
 	echo "Step: init Install '$INSTALL_SCRIPT'"
@@ -83,7 +91,11 @@ install() {
     PAKAGE_INST="${PAKAGE_INST} $1"
     
     if [ $DEBUG = true ]; then
-		eval "$PACKER -S $PAKKER_ALL $1"
+		if [ $IS_FEDORA = true ]; then
+			eval "sudo $PACKER install $PACKER_ALL $1"
+		else
+			eval "$PACKER -S $PACKER_ALL $1"
+		fi
 		
 	    retVal=$?
 	    if [ $retVal -ne 0 ]; then
@@ -96,7 +108,11 @@ install() {
 fullInstall() {
 	echo "Step: full Install"
 	if [ $DEBUG != true -a "$PAKAGE_INST" != "" ]; then
-		eval "$PACKER -S $PAKKER_ALL $PAKAGE_INST"
+		if [ $IS_FEDORA = true ]; then
+			eval "sudo $PACKER install $PACKER_ALL $PAKAGE_INST"
+		else
+			eval "$PACKER -S $PACKER_ALL $PAKAGE_INST"
+		fi
 		errorCheck "install packages"
 	fi
 }

@@ -1,7 +1,5 @@
 #!/usr/bin/env zsh
 
-sudo pacman -Syy lsb-release
-
 . ~/.scripts/defs
 
 # Init Install
@@ -29,17 +27,19 @@ if [ -f /etc/pamac.conf ]; then
 	errorCheck "pamac config"
 fi
 
-sudo pacman -S --needed git base-devel colorgcc go ruby rust
+if [ $IS_FEDORA = true ]; then
+	sudo dnf install go ruby rust colorgcc
+else
+	sudo pacman -S --needed git base-devel colorgcc go ruby rust
+fi
 errorCheck "installation base-devel"
 
-# paru installieren
-git clone https://aur.archlinux.org/paru.git
-cd paru
-makepkg -si
 
 # Prompt installieren
-install ttf-meslo-nerd-font-powerlevel10k
-install zsh-theme-powerlevel10k
+if [ $IS_FEDORA = false ]; then
+	install ttf-meslo-nerd-font-powerlevel10k
+	install zsh-theme-powerlevel10k
+fi
 errorCheck "installation prompt"
 
 # disable sudo password

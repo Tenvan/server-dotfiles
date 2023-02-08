@@ -3,7 +3,6 @@
 # Add useful aliases 
 alias path='echo -e ${PATH//:/\\n}'
 alias grubup="sudo update-grub"
-alias orphaned="sudo pacman -Rns $(pacman -Qtdq)"
 alias untar='tar -zxvf '
 alias wget='wget -c '
 alias speed='speedtest-cli --server 2406 --simple'
@@ -54,12 +53,19 @@ alias unlock="sudo rm /var/lib/pacman/db.lck"
 alias userlist="cut -d: -f1 /etc/passwd"
 
 #package manager
-alias inst="$PACTOOL -S --color always --needed"
-alias inst_over="$PACTOOL -S --color always --needed --overwrite \*"
-alias uninst="$PACTOOL -Rcn"
 alias upall="$HOME/.bin/update-all"
-alias search="$PACTOOL -Ss --bottomup"
-alias upkeys="sudo pacman-key --refresh-keys"
+
+if [ $IS_FEDORA = true ]; then
+	alias search="sudo dnf search"
+	alias inst="sudo dnf install"
+	alias uninst="sudo dnf uninstall"
+else
+	alias inst="$PACTOOL -S --color always --needed"
+	alias inst_over="$PACTOOL -S --color always --needed --overwrite \*"
+	alias uninst="$PACTOOL -Rcn"
+	alias search="$PACTOOL -Ss --bottomup"
+	alias upkeys="sudo pacman-key --refresh-keys"
+fi
 
 #get the error messages from journalctl
 alias jctl="journalctl -p 3 -xb"
