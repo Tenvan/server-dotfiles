@@ -9,20 +9,26 @@ csource() {
 export NVM_DIR="$HOME/.nvm"
 csource /usr/share/nvm/nvm.sh
 
+csource /etc/os-release
+
 #####################
 # init distro check #
 #####################
-LINUX_VERSION_NAME=$(lsb_release -si)
+LINUX_VERSION_NAME="$NAME"
 IS_ARCH=false
 IS_ARCO=false
 IS_MANJARO=false
-IS_ENDEA=false
+IS_FEDORA=false
+IS_RHEL=false
 
 SCRIPTS="$HOME/.scripts"
 
 DEBUG=false
 
 PACTOOL=pacman
+if [ IS_FEDORA ]; then
+    PACTOOL=sudo dnf
+fi
 
 if [ -x "$(command -v yay)" ]; then
   export PACTOOL=yay
@@ -49,16 +55,21 @@ if [ $LINUX_VERSION_NAME = "ManjaroLinux" ]; then
 	IS_MANJARO=true
 fi
 
-if [ $LINUX_VERSION_NAME = "EndeavourOS" ]; then
-	IS_ENDEA=true
+if [ $LINUX_VERSION_NAME = "Fedora Linux" ]; then
+	IS_FEDORA=true
 fi
 
-# echo "Linux Version.: $LINUX_VERSION_NAME"
-# echo "IsArch........: $IS_ARCH"
-# echo "IsArco........: $IS_ARCO"
-# echo "IsManjaro.....: $IS_MANJARO"
-# echo "IsEndeavourOS.: $IS_ENDEA"
-# echo "AUR Manager...: $PACKER"
+if [ $LINUX_VERSION_NAME = "RHEL" ]; then
+	IS_RHEL=true
+fi
+
+echo "Linux Version.: $LINUX_VERSION_NAME"
+echo "IsArch........: $IS_ARCH"
+echo "IsArco........: $IS_ARCO"
+echo "IsManjaro.....: $IS_MANJARO"
+echo "IsFedora......: $IS_FEDORA"
+echo "IsRHEL........: $IS_RHEL"
+echo "AUR Manager...: $PACKER"
 
 MAKEFLAGS="-j$(nproc)"
 PAKKER_ALL="--color always --needed --overwrite \* $@" 
