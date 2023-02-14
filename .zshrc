@@ -355,5 +355,4 @@ csource "$HOME/.scripts/ranger.zsh"
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 csource ~/.bin/.p10k.zsh
 
-# archey4
 fastfetch

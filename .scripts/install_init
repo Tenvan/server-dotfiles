@@ -27,16 +27,16 @@ if [ -f /etc/pamac.conf ]; then
 	errorCheck "pamac config"
 fi
 
-if [ $IS_FEDORA = true ]; then
-	sudo dnf install go ruby rust colorgcc
+if [ $IS_RH_BASED = true ]; then
+	sudo sudo $PACKER install git go ruby rust colorgcc make
 else
-	sudo pacman -S --needed git base-devel colorgcc go ruby rust
+	sudo sudo $PACKER -S --needed git base-devel colorgcc go ruby rust
 fi
 errorCheck "installation base-devel"
 
 
 # Prompt installieren
-if [ $IS_FEDORA = false ]; then
+if [ $IS_RH_BASED = false ]; then
 	install ttf-meslo-nerd-font-powerlevel10k
 	install zsh-theme-powerlevel10k
 fi

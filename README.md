@@ -1,9 +1,8 @@
 # Server DotFiles ZSH
 
-- Konfiguration Arch-Based Servers mit DotFiles
+- Konfiguration auf ArchLinux und RHEL basierende Distros
 - Schwerpunkt liegt auf der ZSH-Shell
 
-Als Basis dient eine Manajaro Architect CLI Installation, oder eine vergleichbare.
 Alle Benötigten Paket werden per Script nachinstalliert.
 
 ## Installation
@@ -15,27 +14,16 @@ git clone https://github.com/Tenvan/server-dotfiles.git
 ```
 
 und in das Homeverzeichnis verschieben:
-```zsh
-mv -fv server-dotfiles/*(DN) ~
-```
-
 ```bash
 shopt -s dotglob
 rsync -vrlptgo --include ".*" server-dotfiles/* ~/
 rm -fr server-dotfiles/
 ```
 
-Die benötigten Pakete werden Fehlende entweder komplett installiert:
-```bash
-sh ~/install.zsh
-```
-
-oder in Einzelschritten (falls Probleme auftreten, ist hiermit die Suche einfacher):
+Die benötigten Pakete werden mit folgenden Scripten installiert:
 ```bash
 ~/.script/install_init
 ~/.script/install_base
-~/.script/install_vm
-~/.script/install_finish
 ```
 
 Optional:
@@ -43,4 +31,5 @@ Optional:
 ```bash
 ~/.script/install_dev
 ~/.script/install_vm
+~/.script/install_finish
 ```

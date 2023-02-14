@@ -23,23 +23,23 @@ fi
 
 # system packages
 if [ $IS_FEDORA = false ]; then
-	install archey4
-	install alsi
-	install bashtop
-	install pfetch
-	install lhasa
-	install update-grub
-	install ttf-devicons
-	install fd
-	install awesome-terminal-fonts
-	install terminus-font
-	install ttf-meslo-nerd-font-powerlevel10k
-	install zsh-theme-powerlevel10k
+    install archey4
+    install alsi
+    install bashtop
+    install pfetch
+    install lhasa
+    install update-grub
+    install ttf-devicons
+    install fd
+    install awesome-terminal-fonts
+    install terminus-font
+    install ttf-meslo-nerd-font-powerlevel10k
+    install zsh-theme-powerlevel10k
 else
-	install vim-devicons
-	install mono-complete
-	install dotnet-runtime-6.0
-	install dotnet-runtime-7.0
+    install vim-devicons
+    install mono-complete
+    install dotnet-runtime-6.0
+    install dotnet-runtime-7.0
 fi
 
 install arj
@@ -98,12 +98,22 @@ fullInstall
 finish
 
 # ranger plugins
-if [ $IS_FEDORA = false ]; then
-	mkdir "$HOME/.config/ranger/plugins"
-	ln -sf /usr/share/ranger/plugins/ranger_devicons ~/.config/ranger/plugins/ranger_devicons
+if [ $IS_CENTOS = true -o $IS_RHEL = true ]; then
+    git clone https://github.com/hut/ranger.git
+    cd ranger
+    sudo make install
+    ranger --copy-config=all
 fi
 
-# micro plugins
+if [ $IS_ARCH_BASED = true ]; then
+    mkdir "$HOME/.config/ranger/plugins"
+    ln -sf /usr/share/ranger/plugins/ranger_devicons ~/.config/ranger/plugins/ranger_devicons
+fi
+
+# micro + plugins
+if [ $IS_RH_BASED = true ]; then
+    curl https://getmic.ro | bash
+fi
 micro -plugin install comment bounce editorconfig joinLines quoter filemanager bookmark \
 jump detectindent go snippets crystal quickfix wc manipulator \
 monokai-dark gotham-colors nordcolors
