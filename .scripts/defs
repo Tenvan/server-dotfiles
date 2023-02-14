@@ -62,7 +62,7 @@ if [ "$LINUX_VERSION_NAME" = "CentOS Stream" ]; then
     IS_RH_BASED=true
 fi
 
-if [ $IS_ARCH_BASED = true ]; then
+if [ $IS_RH_BASED = true ]; then
     PACTOOL=yum
 else
     PACTOOL=pacman
