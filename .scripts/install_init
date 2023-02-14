@@ -28,7 +28,7 @@ if [ -f /etc/pamac.conf ]; then
 fi
 
 if [ $IS_RH_BASED = true ]; then
-	sudo sudo $PACKER install git go ruby rust colorgcc make
+	sudo sudo $PACKER install git go ruby rust make
 else
 	sudo sudo $PACKER -S --needed git base-devel colorgcc go ruby rust
 fi
