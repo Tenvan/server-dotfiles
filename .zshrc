@@ -222,7 +222,9 @@ fi
 
 csource "$HOME/.zinit/bin/zinit.zsh"
 
+autoload -Uz compinit && compinit
 autoload -Uz _zinit
+
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
 zinit ice depth=1;

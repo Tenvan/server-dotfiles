@@ -84,18 +84,18 @@ else
     PACKER_ALL="--color always --needed --overwrite \* $@"
 fi
 
-echo "Linux Version..: $LINUX_VERSION_NAME"
-echo "Based on ArchLinux.: $IS_ARCH_BASED"
-echo "Based on RHEL......: $IS_RH_BASED"
-echo "IsArch.............: $IS_ARCH"
-echo "IsArco.............: $IS_ARCO"
-echo "IsManjaro..........: $IS_MANJARO"
-echo "IsFedora...........: $IS_FEDORA"
-echo "IsRHEL.............: $IS_RHEL"
-echo "IsCentOS...........: $IS_CENTOS"
-echo "Package Manager....: $PACTOOL"
-echo "AUR Manager........: $PACKER"
-echo "Packer Params......: $PACKER_ALL"
+# echo "Linux Version..: $LINUX_VERSION_NAME"
+# echo "Based on ArchLinux.: $IS_ARCH_BASED"
+# echo "Based on RHEL......: $IS_RH_BASED"
+# echo "IsArch.............: $IS_ARCH"
+# echo "IsArco.............: $IS_ARCO"
+# echo "IsManjaro..........: $IS_MANJARO"
+# echo "IsFedora...........: $IS_FEDORA"
+# echo "IsRHEL.............: $IS_RHEL"
+# echo "IsCentOS...........: $IS_CENTOS"
+# echo "Package Manager....: $PACTOOL"
+# echo "AUR Manager........: $PACKER"
+# echo "Packer Params......: $PACKER_ALL"
 
 initInstall() {
     INSTALL_SCRIPT=$1
