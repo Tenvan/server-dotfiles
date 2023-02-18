@@ -6,7 +6,13 @@
 # sudo timeshift --btrfs --create
 
 # System Update
-$PACTOOL -Syyu --needed
+if [ $IS_ARCH_BASED = true ]; then
+	$PACTOOL -Syyu --needed
+fi
+
+if [ $IS_RH_BASED = true ]; then
+	sudo $PACTOOL update -y
+fi
 
 # Flatpak Update
 flatpak update -v --noninteractive

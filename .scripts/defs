@@ -63,7 +63,7 @@ if [ "$LINUX_VERSION_NAME" = "CentOS Stream" ]; then
 fi
 
 if [ $IS_RH_BASED = true ]; then
-    PACTOOL=yum
+    PACTOOL=dnf
 else
     PACTOOL=pacman
     if [ -x "$(command -v yay)" ]; then
