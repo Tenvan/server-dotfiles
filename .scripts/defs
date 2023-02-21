@@ -15,11 +15,14 @@ csource /etc/os-release
 # init distro check #
 #####################
 LINUX_VERSION_NAME="$NAME"
+LINUX_BASED="$ID_LIKE"
 IS_ARCH_BASED=false
+IS_FEDORA_BASED=false
+
 IS_ARCH=false
 IS_ARCO=false
 IS_MANJARO=false
-IS_RH_BASED=false
+
 IS_FEDORA=false
 IS_RHEL=false
 IS_CENTOS=false
@@ -32,45 +35,46 @@ DEBUG=false
 ERROR_PAKAGE_UNINST=
 ERROR_PAKAGE_INST=
 
+# Distro Basis
+if [ "$LINUX_BASED" = "arch" ]; then
+    IS_ARCH_BASED=true
+fi
+
+if [ "$LINUX_BASED" = "fedora" ]; then
+    IS_FEDORA_BASED=true
+fi
+
+# Distro
 if [ "$LINUX_VERSION_NAME" = "Arch" ]; then
     IS_ARCH=true
-    IS_ARCH_BASED=true
 fi
 
 if [ "$LINUX_VERSION_NAME" = "ArcoLinux" ]; then
     IS_ARCO=true
-    IS_ARCH_BASED=true
 fi
 
 if [ "$LINUX_VERSION_NAME" = "ManjaroLinux" ]; then
     IS_MANJARO=true
-    IS_ARCH_BASED=true
 fi
 
 if [ "$LINUX_VERSION_NAME" = "Fedora Linux" ]; then
     IS_FEDORA=true
-    IS_RH_BASED=true
 fi
 
-if [ "$LINUX_VERSION_NAME" = "RHEL" ]; then
+if [ "$LINUX_VERSION_NAME" = "Red Hat Enterprise Linux" ]; then
     IS_RHEL=true
-    IS_RH_BASED=true
 fi
 
 if [ "$LINUX_VERSION_NAME" = "CentOS Stream" ]; then
     IS_CENTOS=true
-    IS_RH_BASED=true
 fi
 
-if [ $IS_RH_BASED = true ]; then
+if [ $IS_FEDORA_BASED = true ]; then
     PACTOOL=dnf
 else
     PACTOOL=pacman
     if [ -x "$(command -v yay)" ]; then
         export PACTOOL=yay
-    fi
-    if [ -x "$(command -v paru)" ]; then
-        export PACTOOL=paru
     fi
 fi
 
@@ -78,24 +82,26 @@ fi
 PACKER="$PACTOOL"
 MAKEFLAGS="-j$(nproc)"
 
-if [ "$IS_RH_BASED" = true ]; then
-    PACKER_ALL="--verbose $@"
+if [ "$IS_FEDORA_BASED" = true ]; then
+    PACKER_ALL="--verbose -y $@"
 else
     PACKER_ALL="--color always --needed --overwrite \* $@"
 fi
 
-# echo "Linux Version..: $LINUX_VERSION_NAME"
-# echo "Based on ArchLinux.: $IS_ARCH_BASED"
-# echo "Based on RHEL......: $IS_RH_BASED"
-# echo "IsArch.............: $IS_ARCH"
-# echo "IsArco.............: $IS_ARCO"
-# echo "IsManjaro..........: $IS_MANJARO"
-# echo "IsFedora...........: $IS_FEDORA"
-# echo "IsRHEL.............: $IS_RHEL"
-# echo "IsCentOS...........: $IS_CENTOS"
-# echo "Package Manager....: $PACTOOL"
-# echo "AUR Manager........: $PACKER"
-# echo "Packer Params......: $PACKER_ALL"
+dumpVersion() {
+	echo "Linux Version..: $LINUX_VERSION_NAME"
+	echo "Based on ArchLinux...: $IS_ARCH_BASED"
+	echo "Based on Fedora/RHEL.: $IS_FEDORA_BASED"
+	echo "IsArch...............: $IS_ARCH"
+	echo "IsArco...............: $IS_ARCO"
+	echo "IsManjaro............: $IS_MANJARO"
+	echo "IsFedora.............: $IS_FEDORA"
+	echo "IsRHEL...............: $IS_RHEL"
+	echo "IsCentOS.............: $IS_CENTOS"
+	echo "Package Manager......: $PACTOOL"
+	echo "AUR Manager..........: $PACKER"
+	echo "Packer Params........: $PACKER_ALL"
+}
 
 initInstall() {
     INSTALL_SCRIPT=$1
@@ -107,7 +113,7 @@ install() {
     PAKAGE_INST="${PAKAGE_INST} $1"
     
     if [ $DEBUG = true ]; then
-        if [ $IS_RH_BASED = true ]; then
+        if [ $IS_FEDORA_BASED = true ]; then
             eval "sudo $PACKER install $PACKER_ALL $1"
         else
             eval "$PACKER -S $PACKER_ALL $1"
@@ -124,7 +130,7 @@ install() {
 fullInstall() {
     echo "Step: full Install"
     if [ $DEBUG != true -a "$PAKAGE_INST" != "" ]; then
-        if [ $IS_RH_BASED = true ]; then
+        if [ $IS_FEDORA_BASED = true ]; then
             eval "sudo $PACKER install $PACKER_ALL $PAKAGE_INST"
         else
             eval "$PACKER -S $PACKER_ALL $PAKAGE_INST"
@@ -136,7 +142,11 @@ fullInstall() {
 uninstall() {
     PAKAGE_UNINST="${PAKAGE_UNINST} $1"
     
-    eval "$PACKER -R $1"
+    if [ $IS_FEDORA_BASED = true ]; then
+        eval "sudo $PACKER remove $1"
+    else
+        eval "$PACKER -R --noconfirm $1"
+    fi
     
     retVal=$?
     if [ $retVal -ne 0 ]; then
@@ -148,7 +158,7 @@ uninstall() {
 fullUninstall() {
     echo "Step: full Uninstall"
     if [ $DEBUG != true -a "$PAKAGE_UNINST" != "" ]; then
-        if [ $IS_RH_BASED = true ]; then
+        if [ $IS_FEDORA_BASED = true ]; then
             eval "sudo $PACKER remove $PAKAGE_UNINST"
         else
             eval "$PACKER -R --noconfirm $PAKAGE_UNINST"
@@ -225,3 +235,5 @@ expand() {
         echo "'$1' is not a valid file"
     fi
 }
+
+#dumpVersion

@@ -31,22 +31,21 @@ fi
 
 # libvirt service and manager
 if [ $INSTALL_VIRTIO = true ]; then
-	if [ $IS_FEDORA = false ]; then
-		install virtio-win
-		install qemu-desktop
+	if [ $IS_FEDORA_BASED = false ]; then
 		install qemu-arch-extra
 		install vde2 
 		install openbsd-netcat 
 		install ovmf
-	else
+		install bridge-utils 
 	fi
 	
+	install virtio-win
 	install virt-manager
 	install libvirt
 	install iptables-nft
 	install ebtables
 	install dnsmasq
-	install bridge-utils 
+	install cockpit-machines	
 fi
 
 ###############################

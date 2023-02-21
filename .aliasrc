@@ -55,11 +55,13 @@ alias userlist="cut -d: -f1 /etc/passwd"
 #package manager
 alias upall="$HOME/.bin/update-all"
 
-if [ $IS_FEDORA = true ]; then
-	alias search="sudo dnf search"
+if [ $IS_FEDORA_BASED = true ]; then
 	alias inst="sudo dnf install"
 	alias uninst="sudo dnf uninstall"
-else
+	alias search="sudo dnf search"
+fi
+
+if [ $IS_ARCH_BASED = true ]; then
 	alias inst="$PACTOOL -S --color always --needed"
 	alias inst_over="$PACTOOL -S --color always --needed --overwrite \*"
 	alias uninst="$PACTOOL -Rcn"

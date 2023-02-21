@@ -22,67 +22,74 @@ if [ $IS_ARCO = true ]; then
 fi
 
 # system packages
-if [ $IS_FEDORA = false ]; then
-    install archey4
-    install alsi
-    install bashtop
-    install pfetch
-    install lhasa
-    install update-grub
+if [ $IS_ARCH_BASED = true ]; then
     install ttf-devicons
     install fd
     install awesome-terminal-fonts
     install terminus-font
     install ttf-meslo-nerd-font-powerlevel10k
     install zsh-theme-powerlevel10k
-else
-    install vim-devicons
-    install mono-complete
+	install bpytop
+	install docker-compose
+	install exa
+	install lsd
+	install fastfetch
+	install openconnect
+	install p7zip
+	install unrar
+	install multitail
+
+	# language files
+	install man-pages-de
+
+	#####################
+	# collect rust apps #
+	#####################
+	install bat
+	install procs
+	install ripgrep
+	install tokei
+	install git-delta
+
+	# powerline in linux console
+	install powerline-fonts
+
+	# cockpit
+	install cockpit-file-sharing
+fi
+
+# cockpit
+install cockpit
+install cockpit-packagekit
+install cockpit-podman
+install cockpit-sosreport
+install cockpit-pcp
+install cockpit-system
+
+if [ $IS_FEDORA_BASED = true ]; then
     install dotnet-runtime-6.0
     install dotnet-runtime-7.0
 fi
 
-install arj
-install bpytop
-install cpufetch
 install docker
-install docker-compose
-install exa
-install lsd
-install iftop
 install iotop
-install iptraf-ng
-install libsecret
-install multitail
-install neofetch
-install fastfetch
-install openconnect
 install openssh
-install p7zip
 install time
-install unrar
-install tar
 
-# language files
-install man-pages-de
+# ranger + micro + plugins
+if [ $IS_FEDORA_BASED = true ]; then
+    curl https://getmic.ro | bash
+    sudo mv micro /usr/bin/
+fi
 
-# file manager
-install ranger
+if [ $IS_ARCH_BASED = true ]; then
+	# file manager
+	install ranger
 
-# installation of important editors
-install micro
+	# installation of important editors
+	install micro
+fi
 
-#####################
-# collect rust apps #
-#####################
-install bat
-install procs
-install ripgrep
-install tokei
-install git-delta
-
-# powerline in linux console
-install powerline-fonts
 
 ###############################
 # uninstall unneeded packages #
@@ -110,10 +117,6 @@ if [ $IS_ARCH_BASED = true ]; then
     ln -sf /usr/share/ranger/plugins/ranger_devicons ~/.config/ranger/plugins/ranger_devicons
 fi
 
-# micro + plugins
-if [ $IS_RH_BASED = true ]; then
-    curl https://getmic.ro | bash
-fi
 micro -plugin install comment bounce editorconfig joinLines quoter filemanager bookmark \
 jump detectindent go snippets crystal quickfix wc manipulator \
 monokai-dark gotham-colors nordcolors
