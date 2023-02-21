@@ -10,7 +10,7 @@ initInstall "install_dev"
 ###########################################
 
 # Base Development Tools
-if [ $IS_FEDORA = false ]; then
+if [ $IS_ARCH_BASED = true ]; then
 	install base-devel
 	install gitflow-avh
 	install gradle
@@ -24,22 +24,25 @@ if [ $IS_FEDORA = false ]; then
 	install dotnet-sdk
 	install mono
 	install mono-msbuild
-else
-	install yarnpkg
+	install git-delta
+	install pass
+	install nuget
+	install nsis
+	install ripgrep
+	install shellcheck
+fi
+
+if [ $IS_FEDORA_BASED = true ]; then
 	# DotNet/Mono Setup
 	install dotnet-sdk-6.0
 	install dotnet-sdk-7.0
-	install mono-complete
 fi
 
+install cmake	
 install git
-install git-delta
-install pass
-install nuget
 install npm
 install svn
 install tk
-install nsis
 install jq
 install python-pip
 
@@ -47,10 +50,6 @@ install python-pip
 install bash-completion
 install clang
 install gdb
-install graphviz
-install ripgrep
-install shellcheck
-install tar
 
 ###############################
 # uninstall unneeded packages #

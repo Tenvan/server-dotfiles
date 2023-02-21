@@ -76,10 +76,23 @@ install iotop
 install openssh
 install time
 
-# ranger + micro + plugins
 if [ $IS_FEDORA_BASED = true ]; then
+	# ranger + micro + plugins
     curl https://getmic.ro | bash
     sudo mv micro /usr/bin/
+	errorCheck "micro install"
+
+	git clone https://github.com/LinusDierheimer/fastfetch.git ~/fastfetch
+	cd ~/fastfetch
+    mkdir -p build
+    cd build
+    cmake ..
+    cmake --build . --target fastfetch --target flashfetch
+	errorCheck "fastfetch maker"
+    sudo mv fastfetch /usr/bin
+	errorCheck "fastfetch install"
+    cd ../..
+    sudo rm -fr ~/fastfetch    
 fi
 
 if [ $IS_ARCH_BASED = true ]; then
