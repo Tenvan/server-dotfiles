@@ -160,6 +160,8 @@ setopt extended_glob				# Treat the ‘#’, ‘~’ and ‘^’ characters as p
 setopt INTERACTIVE_COMMENTS  # Enable comments in interactive shell.
 unsetopt HIST_BEEP
 
+csource "$HOME/.profile"
+
 # ░█▀█░█░░░▀█▀░█▀█░█▀▀
 # ░█▀█░█░░░░█░░█▀█░▀▀█
 # ░▀░▀░▀▀▀░▀▀▀░▀░▀░▀▀▀
@@ -351,7 +353,6 @@ fi
 # These need to be done after $PATH is set up so we can find
 # grc and exa
 
-csource "$HOME/.profile"
 csource "$HOME/.scripts/ranger.zsh"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.

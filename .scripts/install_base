@@ -32,7 +32,6 @@ if [ $IS_ARCH_BASED = true ]; then
 	install bpytop
 	install docker-compose
 	install exa
-	install lsd
 	install fastfetch
 	install openconnect
 	install p7zip
@@ -41,15 +40,6 @@ if [ $IS_ARCH_BASED = true ]; then
 
 	# language files
 	install man-pages-de
-
-	#####################
-	# collect rust apps #
-	#####################
-	install bat
-	install procs
-	install ripgrep
-	install tokei
-	install git-delta
 
 	# powerline in linux console
 	install powerline-fonts
@@ -76,25 +66,6 @@ install iotop
 install openssh
 install time
 
-if [ $IS_FEDORA_BASED = true ]; then
-	# ranger + micro + plugins
-    curl https://getmic.ro | bash
-    sudo mv micro /usr/bin/
-	errorCheck "micro install"
-
-	git clone https://github.com/LinusDierheimer/fastfetch.git ~/fastfetch
-	cd ~/fastfetch
-    mkdir -p build
-    cd build
-    cmake ..
-    cmake --build . --target fastfetch --target flashfetch
-	errorCheck "fastfetch maker"
-    sudo mv fastfetch /usr/bin
-	errorCheck "fastfetch install"
-    cd ../..
-    sudo rm -fr ~/fastfetch    
-fi
-
 if [ $IS_ARCH_BASED = true ]; then
 	# file manager
 	install ranger
@@ -102,7 +73,6 @@ if [ $IS_ARCH_BASED = true ]; then
 	# installation of important editors
 	install micro
 fi
-
 
 ###############################
 # uninstall unneeded packages #
@@ -117,12 +87,40 @@ fullInstall
 ## FINISHING #
 finish
 
-# ranger plugins
-if [ $IS_CENTOS = true -o $IS_RHEL = true ]; then
-    git clone https://github.com/hut/ranger.git
-    cd ranger
-    sudo make install
-    ranger --copy-config=all
+# cargo apps
+cargo install exa lsd git-delta bat procs
+
+if [ $IS_FEDORA_BASED = true ]; then
+
+	# micro
+	if [ -x "$(command -v micro)" ]; then
+	    curl https://getmic.ro | bash
+	    sudo mv micro /usr/bin/
+		errorCheck "micro install"
+	fi
+
+	# ranger
+	if [ -x "$(command -v ranger)" ]; then
+	    git clone https://github.com/hut/ranger.git
+	    cd ranger
+	    sudo make install
+		errorCheck "ranger install"
+	    ranger --copy-config=all
+    fi
+    
+	if [ -x "$(command -v fastfetch)" ]; then
+		git clone https://github.com/LinusDierheimer/fastfetch.git ~/fastfetch
+		cd ~/fastfetch
+	    mkdir -p build
+	    cd build
+	    cmake ..
+	    cmake --build . --target fastfetch --target flashfetch
+		errorCheck "fastfetch make"
+	    sudo mv fastfetch /usr/bin
+		errorCheck "fastfetch install"
+	    cd ../..
+	    sudo rm -fr ~/fastfetch
+	fi
 fi
 
 if [ $IS_ARCH_BASED = true ]; then

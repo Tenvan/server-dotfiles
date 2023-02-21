@@ -39,6 +39,8 @@ if [ $IS_FEDORA_BASED = true ]; then
 fi
 
 install cmake	
+install cargo
+install rust
 install git
 install npm
 install svn
